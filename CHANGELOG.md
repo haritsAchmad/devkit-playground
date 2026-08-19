@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Contract tests for CLI routing and JSON envelopes.
 - `uuid` command with secure UUID v4 generation and multi-value output.
 - `secret` command with secure base64url and hexadecimal generation.
+- `hash` command with streaming SHA-256 and SHA-512 support for files and stdin.
 
 ### Changed
 

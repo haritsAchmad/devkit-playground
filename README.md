@@ -86,7 +86,7 @@ cd devkit-playground
 go test ./...
 ```
 
-The repository currently provides the CLI foundation, versioned output envelope, UUID generation, and secure secret generation. Other v0.1 utility commands are not implemented yet.
+The repository currently provides the CLI foundation, versioned output envelope, UUID and secret generation, and streaming file or stdin hashing. Other v0.1 utility commands are not implemented yet.
 
 Before submitting a code change, run:
 

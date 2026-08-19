@@ -19,7 +19,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 
 - [x] Implement `uuid`.
 - [x] Implement `secret`.
-- [ ] Implement `hash`.
+- [x] Implement `hash`.
 - [ ] Implement `jwt inspect`.
 - [ ] Implement `json pretty` and `json minify`.
 - [ ] Implement `env diff`.

@@ -29,10 +29,11 @@ Global flags:
 Commands:
   uuid         generate cryptographically secure UUIDs
   secret       generate cryptographically secure secrets
+  hash         hash a file or standard input
 `
 
 // Run executes the CLI and returns the process exit code.
-func Run(args []string, stdout, stderr io.Writer, version string) int {
+func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version string) int {
 	jsonMode, remaining, parseErr := parseGlobalFlags(args)
 	if parseErr != nil {
 		return writeFailure(stdout, stderr, jsonMode, "", "invalid_usage", parseErr.Error(), ExitUsage)
@@ -58,6 +59,8 @@ func Run(args []string, stdout, stderr io.Writer, version string) int {
 		return runUUID(remaining[1:], stdout, stderr, jsonMode)
 	case "secret":
 		return runSecret(remaining[1:], stdout, stderr, jsonMode)
+	case "hash":
+		return runHash(remaining[1:], stdin, stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

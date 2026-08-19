@@ -112,9 +112,14 @@ func TestRunRejectsUnknownGlobalFlag(t *testing.T) {
 
 func runForTest(t *testing.T, args ...string) (stdout, stderr string, exitCode int) {
 	t.Helper()
+	return runForTestWithInput(t, "", args...)
+}
+
+func runForTestWithInput(t *testing.T, input string, args ...string) (stdout, stderr string, exitCode int) {
+	t.Helper()
 
 	var stdoutBuffer bytes.Buffer
 	var stderrBuffer bytes.Buffer
-	exitCode = Run(args, &stdoutBuffer, &stderrBuffer, "test-version")
+	exitCode = Run(args, strings.NewReader(input), &stdoutBuffer, &stderrBuffer, "test-version")
 	return stdoutBuffer.String(), stderrBuffer.String(), exitCode
 }
