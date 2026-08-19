@@ -86,7 +86,7 @@ cd devkit-playground
 go test ./...
 ```
 
-The repository is currently in its documentation and CLI-foundation phase, so runnable packages may not exist yet.
+The repository currently provides the CLI foundation and versioned output envelope. The v0.1 utility commands are not implemented yet.
 
 Before submitting a code change, run:
 

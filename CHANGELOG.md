@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Product direction for an offline-first, cross-stack developer toolbox.
 - Architecture boundaries and dependency principles.
 - Initial v0.1 CLI, JSON, error, and exit-code contracts.
+- CLI entry point with help, version, and structured JSON foundations.
+- Contract tests for CLI routing and JSON envelopes.
 
 ### Changed
 

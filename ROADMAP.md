@@ -12,7 +12,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Define architectural boundaries.
 - [x] Define command, JSON, error, and exit-code contracts.
 - [x] Add project documentation and an MIT License.
-- [ ] Establish the CLI command structure.
+- [x] Establish the CLI command structure.
 - [ ] Keep tool logic independent from CLI and presentation code.
 
 ### Commands
