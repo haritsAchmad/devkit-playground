@@ -157,6 +157,7 @@ devkit jwt inspect [token]
 ```
 
 - Reads a positional token when provided; otherwise reads one token from stdin.
+- Rejects token input larger than 1 MiB.
 - Documentation should recommend stdin because arguments may be visible in shell history or process listings.
 - Decodes JWT header and payload using base64url rules.
 - Does not verify the signature or establish authenticity.
