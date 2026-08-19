@@ -31,7 +31,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Add tests for failure behavior and sensitive-data handling.
 - [x] Add CI for formatting, vetting, and tests.
 - [x] Add draft release automation for versioned cross-platform binaries and checksums.
-- [ ] Verify supported behavior on Windows, Linux, and macOS.
+- [x] Verify supported behavior on Windows, Linux, and macOS.
 - [x] Document installation and practical examples.
 - [ ] Publish `v0.1.0`.
 

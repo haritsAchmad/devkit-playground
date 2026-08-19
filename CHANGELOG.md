@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0-rc.1] - 2026-08-19
+
 ### Added
 
 - Initial Go module.
@@ -32,4 +34,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Reworked the README and roadmap around concrete v0.1 outcomes and non-goals.
 - Expanded contribution guidance for architecture, compatibility, testing, and sensitive data.
 
-[Unreleased]: https://github.com/haritsAchmad/devkit-playground/commits/main
+[Unreleased]: https://github.com/haritsAchmad/devkit-playground/compare/v0.1.0-rc.1...HEAD
+[0.1.0-rc.1]: https://github.com/haritsAchmad/devkit-playground/releases/tag/v0.1.0-rc.1
