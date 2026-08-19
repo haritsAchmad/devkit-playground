@@ -15,6 +15,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Product direction for an offline-first, cross-stack developer toolbox.
 - Architecture boundaries and dependency principles.
 - Initial v0.1 CLI, JSON, error, and exit-code contracts.
+- CLI entry point with help, version, and structured JSON foundations.
+- Contract tests for CLI routing and JSON envelopes.
+- `uuid` command with secure UUID v4 generation and multi-value output.
+- `secret` command with secure base64url and hexadecimal generation.
+- `hash` command with streaming SHA-256 and SHA-512 support for files and stdin.
+- `jwt inspect` command with safe, unverified header and claims decoding.
+- `json pretty` and `json minify` commands with precise number handling.
+- `env diff` command for deterministic, value-safe dotenv key comparison.
+- Cross-platform GitHub Actions checks for formatting, module tidiness, vetting, race tests, unit tests, and builds.
+- Local installation and version-injected build instructions.
 
 ### Changed
 

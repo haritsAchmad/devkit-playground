@@ -8,6 +8,8 @@
 *.out
 /bin/
 /dist/
+/.cache/
+/tmp/
 
 # Coverage and profiling
 coverage.*

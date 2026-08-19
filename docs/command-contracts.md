@@ -113,7 +113,7 @@ devkit secret [--length N] [--encoding hex|base64url]
 - Generates bytes using `crypto/rand`.
 - `--length` is the number of random bytes and defaults to `32`.
 - `--encoding` defaults to unpadded `base64url`.
-- An implementation-defined maximum length prevents accidental excessive output and must be documented in command help.
+- The maximum length is `4096` bytes to prevent accidental excessive output.
 - Human output contains only the encoded secret and a newline.
 - Invalid length or encoding is usage error `2`; secure-random failure is operation error `4`.
 
@@ -157,6 +157,7 @@ devkit jwt inspect [token]
 ```
 
 - Reads a positional token when provided; otherwise reads one token from stdin.
+- Rejects token input larger than 1 MiB.
 - Documentation should recommend stdin because arguments may be visible in shell history or process listings.
 - Decodes JWT header and payload using base64url rules.
 - Does not verify the signature or establish authenticity.
@@ -211,6 +212,8 @@ devkit env diff <reference-file> <target-file>
 
 - Compares key names, never values.
 - Ignores blank lines and comments.
+- Accepts an optional `export` prefix and portable keys matching `[A-Za-z_][A-Za-z0-9_]*`.
+- Requires each assignment to be contained on one line in v0.1.
 - Reports keys missing from the target and keys present only in the target.
 - Sorts keys lexicographically for deterministic output.
 - Treats duplicate keys and malformed assignments as data errors.

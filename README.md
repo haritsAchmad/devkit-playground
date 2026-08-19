@@ -1,5 +1,7 @@
 # DevKit Playground
 
+[![CI](https://github.com/haritsAchmad/devkit-playground/actions/workflows/ci.yml/badge.svg)](https://github.com/haritsAchmad/devkit-playground/actions/workflows/ci.yml)
+
 DevKit Playground is a lightweight, offline-first developer toolbox written in Go. It collects small, deterministic utilities that developers repeatedly need while working across Go, PHP/Symfony, JavaScript/Nuxt, SQL, and general backend development.
 
 DevKit is implemented in Go for simple distribution and predictable behavior. It is not limited to Go projects.
@@ -47,7 +49,7 @@ DevKit is not an AI agent. It may eventually serve as a deterministic tool layer
 - Add utilities only when they solve a concrete recurring problem.
 - Avoid premature infrastructure and abstraction.
 
-## Planned v0.1 commands
+## Available commands
 
 | Command | Purpose |
 |---|---|
@@ -86,7 +88,49 @@ cd devkit-playground
 go test ./...
 ```
 
-The repository is currently in its documentation and CLI-foundation phase, so runnable packages may not exist yet.
+The repository implements all commands planned for v0.1. The remaining milestone work focuses on cross-platform verification, packaging, and real-world validation.
+
+## Running from source
+
+During development, run commands directly through Go:
+
+```sh
+go run ./cmd/devkit --help
+go run ./cmd/devkit uuid
+go run ./cmd/devkit secret
+```
+
+## Installing locally
+
+Install the current checkout into the Go binary directory:
+
+```sh
+go install ./cmd/devkit
+```
+
+`go env GOBIN` shows the configured binary directory. When it is empty, Go uses the `bin` directory inside `go env GOPATH`. Add that directory to `PATH` to invoke DevKit from anywhere:
+
+```sh
+devkit --help
+```
+
+## Building a binary
+
+Linux or macOS:
+
+```sh
+go build -trimpath -ldflags "-X main.version=v0.1.0-dev" -o bin/devkit ./cmd/devkit
+./bin/devkit --version
+```
+
+Windows PowerShell:
+
+```powershell
+go build -trimpath -ldflags "-X main.version=v0.1.0-dev" -o bin/devkit.exe ./cmd/devkit
+.\bin\devkit.exe --version
+```
+
+Omit `-ldflags` for an unversioned development build, which reports version `dev`.
 
 Before submitting a code change, run:
 
