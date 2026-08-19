@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-19
+
+### Added
+
+- First stable release of the offline-first DevKit CLI.
+- Cross-platform binaries and SHA-256 checksums for Windows, Linux, and macOS.
+
+### Changed
+
+- Promoted the command, JSON, error, and exit-code contracts validated in `v0.1.0-rc.1` to the stable `v0.1.0` release.
+
 ## [0.1.0-rc.1] - 2026-08-19
 
 ### Added
@@ -34,5 +45,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Reworked the README and roadmap around concrete v0.1 outcomes and non-goals.
 - Expanded contribution guidance for architecture, compatibility, testing, and sensitive data.
 
-[Unreleased]: https://github.com/haritsAchmad/devkit-playground/compare/v0.1.0-rc.1...HEAD
+[Unreleased]: https://github.com/haritsAchmad/devkit-playground/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/haritsAchmad/devkit-playground/compare/v0.1.0-rc.1...v0.1.0
 [0.1.0-rc.1]: https://github.com/haritsAchmad/devkit-playground/releases/tag/v0.1.0-rc.1
