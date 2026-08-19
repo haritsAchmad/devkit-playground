@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build draft release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Validate release tag
+        shell: bash
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Tag must look like v0.1.0 or v0.1.0-rc.1"
+            exit 1
+          fi
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build release archives
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="${GITHUB_REF_NAME#v}"
+          staging="$RUNNER_TEMP/devkit-release"
+          mkdir -p "$staging" dist
+
+          build_target() {
+            local goos="$1"
+            local goarch="$2"
+            local archive_name="devkit_${version}_${goos}_${goarch}"
+            local package_dir="$staging/$archive_name"
+            local binary="devkit"
+
+            if [[ "$goos" == "windows" ]]; then
+              binary="devkit.exe"
+            fi
+
+            mkdir -p "$package_dir"
+            CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
+              go build -trimpath \
+              -ldflags "-s -w -X main.version=$GITHUB_REF_NAME" \
+              -o "$package_dir/$binary" ./cmd/devkit
+            cp LICENSE README.md "$package_dir/"
+
+            if [[ "$goos" == "windows" ]]; then
+              (cd "$staging" && zip -qr "$GITHUB_WORKSPACE/dist/$archive_name.zip" "$archive_name")
+            else
+              tar -C "$staging" -czf "dist/$archive_name.tar.gz" "$archive_name"
+            fi
+          }
+
+          build_target linux amd64
+          build_target linux arm64
+          build_target windows amd64
+          build_target windows arm64
+          build_target darwin amd64
+          build_target darwin arm64
+
+          (cd dist && sha256sum ./*.tar.gz ./*.zip > checksums.txt)
+
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --verify-tag \
+            --draft \
+            --generate-notes \
+            --title "DevKit $GITHUB_REF_NAME"
