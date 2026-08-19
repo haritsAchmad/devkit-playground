@@ -25,6 +25,9 @@ Global flags:
   --json       emit structured JSON
   --help       show help
   --version    show the DevKit version
+
+Commands:
+  uuid         generate cryptographically secure UUIDs
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -50,6 +53,8 @@ func Run(args []string, stdout, stderr io.Writer, version string) int {
 			return writeFailure(stdout, stderr, jsonMode, command, "invalid_usage", "version does not accept arguments", ExitUsage)
 		}
 		return writeVersion(stdout, jsonMode, version)
+	case "uuid":
+		return runUUID(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

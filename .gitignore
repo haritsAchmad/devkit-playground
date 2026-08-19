@@ -9,6 +9,7 @@
 /bin/
 /dist/
 /.cache/
+/tmp/
 
 # Coverage and profiling
 coverage.*

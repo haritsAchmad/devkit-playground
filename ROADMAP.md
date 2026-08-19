@@ -17,7 +17,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 
 ### Commands
 
-- [ ] Implement `uuid`.
+- [x] Implement `uuid`.
 - [ ] Implement `secret`.
 - [ ] Implement `hash`.
 - [ ] Implement `jwt inspect`.
