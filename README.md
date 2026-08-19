@@ -86,7 +86,7 @@ cd devkit-playground
 go test ./...
 ```
 
-The repository currently provides the CLI foundation, UUID and secret generation, streaming hashing, and unverified JWT inspection. Other v0.1 utility commands are not implemented yet.
+The repository currently provides the CLI foundation, UUID and secret generation, streaming hashing, unverified JWT inspection, and JSON formatting. The remaining v0.1 utility is not implemented yet.
 
 Before submitting a code change, run:
 

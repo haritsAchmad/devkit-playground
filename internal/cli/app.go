@@ -31,6 +31,8 @@ Commands:
   secret       generate cryptographically secure secrets
   hash         hash a file or standard input
   jwt inspect  decode JWT header and claims without verification
+  json pretty  format JSON for readability
+  json minify  remove insignificant JSON whitespace
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -64,6 +66,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runHash(remaining[1:], stdin, stdout, stderr, jsonMode)
 	case "jwt":
 		return runJWT(remaining[1:], stdin, stdout, stderr, jsonMode)
+	case "json":
+		return runJSON(remaining[1:], stdin, stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

@@ -21,7 +21,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Implement `secret`.
 - [x] Implement `hash`.
 - [x] Implement `jwt inspect`.
-- [ ] Implement `json pretty` and `json minify`.
+- [x] Implement `json pretty` and `json minify`.
 - [ ] Implement `env diff`.
 
 ### Quality and delivery

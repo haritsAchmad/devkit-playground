@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `secret` command with secure base64url and hexadecimal generation.
 - `hash` command with streaming SHA-256 and SHA-512 support for files and stdin.
 - `jwt inspect` command with safe, unverified header and claims decoding.
+- `json pretty` and `json minify` commands with precise number handling.
 
 ### Changed
 
