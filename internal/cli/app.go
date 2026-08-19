@@ -28,6 +28,7 @@ Global flags:
 
 Commands:
   uuid         generate cryptographically secure UUIDs
+  secret       generate cryptographically secure secrets
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -55,6 +56,8 @@ func Run(args []string, stdout, stderr io.Writer, version string) int {
 		return writeVersion(stdout, jsonMode, version)
 	case "uuid":
 		return runUUID(remaining[1:], stdout, stderr, jsonMode)
+	case "secret":
+		return runSecret(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

@@ -113,7 +113,7 @@ devkit secret [--length N] [--encoding hex|base64url]
 - Generates bytes using `crypto/rand`.
 - `--length` is the number of random bytes and defaults to `32`.
 - `--encoding` defaults to unpadded `base64url`.
-- An implementation-defined maximum length prevents accidental excessive output and must be documented in command help.
+- The maximum length is `4096` bytes to prevent accidental excessive output.
 - Human output contains only the encoded secret and a newline.
 - Invalid length or encoding is usage error `2`; secure-random failure is operation error `4`.
 
