@@ -1,0 +1,24 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project intends to follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once versioned releases begin.
+
+## [Unreleased]
+
+### Added
+
+- Initial Go module.
+- Initial project documentation and contribution guidelines.
+- Baseline Go-oriented ignore rules.
+- MIT License.
+- Product direction for an offline-first, cross-stack developer toolbox.
+- Architecture boundaries and dependency principles.
+- Initial v0.1 CLI, JSON, error, and exit-code contracts.
+
+### Changed
+
+- Reworked the README and roadmap around concrete v0.1 outcomes and non-goals.
+- Expanded contribution guidance for architecture, compatibility, testing, and sensitive data.
+
+[Unreleased]: https://github.com/haritsAchmad/devkit-playground/commits/main

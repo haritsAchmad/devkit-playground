@@ -1,0 +1,30 @@
+# Go build and test output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/bin/
+/dist/
+
+# Coverage and profiling
+coverage.*
+*.prof
+
+# Workspace-local files
+go.work
+go.work.sum
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+.env.*
+!.env.example
