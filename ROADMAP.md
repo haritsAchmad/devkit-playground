@@ -29,9 +29,9 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Add unit tests for each tool's domain logic.
 - [x] Add CLI contract tests for human and JSON output.
 - [x] Add tests for failure behavior and sensitive-data handling.
-- [ ] Add CI for formatting, vetting, and tests.
+- [x] Add CI for formatting, vetting, and tests.
 - [ ] Verify supported behavior on Windows, Linux, and macOS.
-- [ ] Document installation and practical examples.
+- [x] Document installation and practical examples.
 - [ ] Publish `v0.1.0`.
 
 ### v0.1 acceptance criteria

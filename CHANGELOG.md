@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `jwt inspect` command with safe, unverified header and claims decoding.
 - `json pretty` and `json minify` commands with precise number handling.
 - `env diff` command for deterministic, value-safe dotenv key comparison.
+- Cross-platform GitHub Actions checks for formatting, module tidiness, vetting, race tests, unit tests, and builds.
+- Local installation and version-injected build instructions.
 
 ### Changed
 
