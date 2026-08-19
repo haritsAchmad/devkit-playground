@@ -144,6 +144,7 @@ go test ./...
 
 - [Architecture](docs/architecture.md) — boundaries and design constraints
 - [Command contracts](docs/command-contracts.md) — CLI, JSON, error, and exit-code behavior
+- [Release guide](docs/releasing.md) — tagged builds, artifacts, and release review
 - [Roadmap](ROADMAP.md) — milestones and acceptance criteria
 - [Contributing guide](CONTRIBUTING.md) — contribution and quality conventions
 - [Changelog](CHANGELOG.md) — notable changes

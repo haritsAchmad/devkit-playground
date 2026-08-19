@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `env diff` command for deterministic, value-safe dotenv key comparison.
 - Cross-platform GitHub Actions checks for formatting, module tidiness, vetting, race tests, unit tests, and builds.
 - Local installation and version-injected build instructions.
+- Draft GitHub Release automation for versioned Windows, Linux, and macOS archives with SHA-256 checksums.
 
 ### Changed
 
