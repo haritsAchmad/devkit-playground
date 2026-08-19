@@ -13,7 +13,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Define command, JSON, error, and exit-code contracts.
 - [x] Add project documentation and an MIT License.
 - [x] Establish the CLI command structure.
-- [ ] Keep tool logic independent from CLI and presentation code.
+- [x] Keep tool logic independent from CLI and presentation code.
 
 ### Commands
 
@@ -22,13 +22,13 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Implement `hash`.
 - [x] Implement `jwt inspect`.
 - [x] Implement `json pretty` and `json minify`.
-- [ ] Implement `env diff`.
+- [x] Implement `env diff`.
 
 ### Quality and delivery
 
-- [ ] Add unit tests for each tool's domain logic.
-- [ ] Add CLI contract tests for human and JSON output.
-- [ ] Add tests for failure behavior and sensitive-data handling.
+- [x] Add unit tests for each tool's domain logic.
+- [x] Add CLI contract tests for human and JSON output.
+- [x] Add tests for failure behavior and sensitive-data handling.
 - [ ] Add CI for formatting, vetting, and tests.
 - [ ] Verify supported behavior on Windows, Linux, and macOS.
 - [ ] Document installation and practical examples.

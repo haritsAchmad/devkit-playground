@@ -212,6 +212,8 @@ devkit env diff <reference-file> <target-file>
 
 - Compares key names, never values.
 - Ignores blank lines and comments.
+- Accepts an optional `export` prefix and portable keys matching `[A-Za-z_][A-Za-z0-9_]*`.
+- Requires each assignment to be contained on one line in v0.1.
 - Reports keys missing from the target and keys present only in the target.
 - Sorts keys lexicographically for deterministic output.
 - Treats duplicate keys and malformed assignments as data errors.

@@ -33,6 +33,7 @@ Commands:
   jwt inspect  decode JWT header and claims without verification
   json pretty  format JSON for readability
   json minify  remove insignificant JSON whitespace
+  env diff     compare dotenv key sets without exposing values
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -68,6 +69,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runJWT(remaining[1:], stdin, stdout, stderr, jsonMode)
 	case "json":
 		return runJSON(remaining[1:], stdin, stdout, stderr, jsonMode)
+	case "env":
+		return runEnv(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)
