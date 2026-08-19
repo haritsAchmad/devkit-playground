@@ -33,7 +33,7 @@ The roadmap describes direction rather than a fixed delivery commitment.
 - [x] Add draft release automation for versioned cross-platform binaries and checksums.
 - [x] Verify supported behavior on Windows, Linux, and macOS.
 - [x] Document installation and practical examples.
-- [ ] Publish `v0.1.0`.
+- [x] Publish `v0.1.0`.
 
 ### v0.1 acceptance criteria
 
