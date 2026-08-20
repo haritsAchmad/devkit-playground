@@ -452,11 +452,13 @@ Invalid flags and modes are error `2`; invalid or oversized Base64 is data error
 ## `capabilities`
 
 ```text
-devkit capabilities
-devkit --json capabilities
+devkit capabilities [--category NAME]
+devkit --json capabilities [--category NAME]
 ```
 
 - Reports every callable command in deterministic lexical order.
+- Human output groups concise command summaries by category; detailed operational metadata remains in JSON.
+- `--category` filters both representations to one known category and rejects unknown category names.
 - Provides a dedicated `capabilities_schema_version` inside the normal versioned JSON envelope so discovery metadata can evolve intentionally.
 - Reports each command's category, summary, accepted input sources, output-sensitivity class, side effects, offline behavior, and JSON support.
 - `input_sources` is always an array, including an empty array for commands that require no input.

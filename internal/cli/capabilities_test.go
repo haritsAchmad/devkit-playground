@@ -67,10 +67,52 @@ func TestRunCapabilitiesHuman(t *testing.T) {
 	if exitCode != ExitSuccess || stderr != "" {
 		t.Fatalf("stdout/stderr/code = %q/%q/%d, want human success", stdout, stderr, exitCode)
 	}
-	for _, expected := range []string{"DevKit capabilities:", "jwt inspect", "sensitive", "temporary_local_bind"} {
+	for _, expected := range []string{"DevKit capabilities (18):", "Inspect:", "jwt inspect", "machine-readable metadata"} {
 		if !strings.Contains(stdout, expected) {
 			t.Errorf("stdout = %q, want %q", stdout, expected)
 		}
+	}
+	if strings.Contains(stdout, "temporary_local_bind") || strings.Contains(stdout, "requested_content") {
+		t.Errorf("stdout = %q, want concise human output without machine metadata", stdout)
+	}
+}
+
+func TestRunCapabilitiesFiltersCategory(t *testing.T) {
+	stdout, stderr, exitCode := runForTest(t, "--json", "capabilities", "--category", "inspect")
+	if exitCode != ExitSuccess || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d, want JSON success", stdout, stderr, exitCode)
+	}
+	var envelope struct {
+		Data capabilitiesData `json:"data"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if len(envelope.Data.Commands) == 0 {
+		t.Fatal("filtered commands are empty")
+	}
+	for _, item := range envelope.Data.Commands {
+		if item.Category != "inspect" {
+			t.Errorf("capability = %+v, want only inspect category", item)
+		}
+	}
+}
+
+func TestRunCapabilitiesRejectsUnknownCategory(t *testing.T) {
+	stdout, stderr, exitCode := runForTest(t, "--json", "capabilities", "--category", "wat")
+	if exitCode != ExitUsage || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d, want JSON usage error", stdout, stderr, exitCode)
+	}
+	var envelope struct {
+		Error struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if envelope.Error.Code != "invalid_category" {
+		t.Errorf("error code = %q, want invalid_category", envelope.Error.Code)
 	}
 }
 

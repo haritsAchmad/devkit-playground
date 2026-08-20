@@ -40,6 +40,7 @@ Commands will support structured JSON output so programs and future local AI age
 ```sh
 devkit --json uuid
 devkit --json capabilities
+devkit capabilities --category inspect
 ```
 
 DevKit is not an AI agent. It may eventually serve as a deterministic tool layer for one.
