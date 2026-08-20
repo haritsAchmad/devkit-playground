@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+
+	jwtinspect "github.com/haritsAchmad/devkit-playground/internal/tools/jwt"
 )
 
 func TestRunJWTInspectReadsStdin(t *testing.T) {
@@ -104,6 +106,25 @@ func TestRunJWTInspectHelp(t *testing.T) {
 	}
 	if stderr != "" {
 		t.Errorf("stderr = %q, want empty", stderr)
+	}
+}
+
+func TestRunJWTRejectsOversizedRawStdinBeforeTrimming(t *testing.T) {
+	input := testJWT(`{"alg":"HS256"}`, `{}`, "signature") + strings.Repeat(" ", jwtinspect.MaxTokenSize)
+	stdout, stderr, exitCode := runForTestWithInput(t, input, "--json", "jwt", "inspect")
+	if exitCode != ExitData || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d, want JSON data error", stdout, stderr, exitCode)
+	}
+	var envelope struct {
+		Error struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if envelope.Error.Code != "invalid_token" || !strings.Contains(stdout, "exceeds maximum size") {
+		t.Errorf("stdout = %q, want oversized invalid_token", stdout)
 	}
 }
 

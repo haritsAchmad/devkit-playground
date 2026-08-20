@@ -71,6 +71,9 @@ func runJSONFormat(operation string, args []string, stdin io.Reader, stdout, std
 
 	document, err := jsonutil.Parse(input)
 	if err != nil {
+		if errors.Is(err, jsonutil.ErrInputTooLarge) {
+			return writeFailure(stdout, stderr, jsonMode, command, "input_too_large", "JSON input exceeds maximum size of 16 MiB", ExitData)
+		}
 		if errors.Is(err, jsonutil.ErrInvalidJSON) {
 			return writeFailure(stdout, stderr, jsonMode, command, "invalid_json", "input must contain exactly one valid JSON value", ExitData)
 		}

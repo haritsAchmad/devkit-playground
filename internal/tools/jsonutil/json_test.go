@@ -68,6 +68,13 @@ func TestParseReportsReadFailure(t *testing.T) {
 	}
 }
 
+func TestParseRejectsOversizedInput(t *testing.T) {
+	_, err := Parse(strings.NewReader(strings.Repeat(" ", MaxInputSize+1)))
+	if !errors.Is(err, ErrInputTooLarge) {
+		t.Errorf("Parse() error = %v, want ErrInputTooLarge", err)
+	}
+}
+
 func FuzzParse(f *testing.F) {
 	f.Add(`{"value":9007199254740993}`)
 	f.Add(`{} trailing`)

@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/haritsAchmad/devkit-playground/internal/tools/jsonutil"
 )
 
 func TestRunJSONPrettyReadsStdin(t *testing.T) {
@@ -120,5 +122,23 @@ func TestRunJSONHelp(t *testing.T) {
 	}
 	if stderr != "" {
 		t.Errorf("stderr = %q, want empty", stderr)
+	}
+}
+
+func TestRunJSONRejectsOversizedInput(t *testing.T) {
+	stdout, stderr, exitCode := runForTestWithInput(t, strings.Repeat(" ", jsonutil.MaxInputSize+1), "--json", "json", "pretty")
+	if exitCode != ExitData || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d, want JSON data error", stdout, stderr, exitCode)
+	}
+	var envelope struct {
+		Error struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if envelope.Error.Code != "input_too_large" {
+		t.Errorf("error code = %q, want input_too_large", envelope.Error.Code)
 	}
 }

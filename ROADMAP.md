@@ -55,6 +55,7 @@ The milestone is complete when:
 - Fix usability problems discovered through actual use.
 - Improve cross-platform behavior.
 - Stabilize the most useful command and JSON contracts.
+- Audit CLI help, global flags, input bounds, redaction, and exit-code consistency.
 - Validate `file inspect` against real files and agent workflows.
 - Validate `repo inspect` as a deterministic preflight for human and agent workflows.
 - Validate `text inspect` against cross-platform files and editor workflows.

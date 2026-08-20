@@ -9,7 +9,12 @@ import (
 	"io"
 )
 
-var ErrInvalidJSON = errors.New("invalid JSON")
+const MaxInputSize = 16 << 20
+
+var (
+	ErrInvalidJSON   = errors.New("invalid JSON")
+	ErrInputTooLarge = errors.New("JSON input exceeds maximum size")
+)
 
 type Document struct {
 	Value any
@@ -18,9 +23,12 @@ type Document struct {
 
 // Parse reads exactly one JSON value and preserves number precision.
 func Parse(input io.Reader) (Document, error) {
-	raw, err := io.ReadAll(input)
+	raw, err := io.ReadAll(io.LimitReader(input, MaxInputSize+1))
 	if err != nil {
 		return Document{}, fmt.Errorf("read JSON input: %w", err)
+	}
+	if len(raw) > MaxInputSize {
+		return Document{}, ErrInputTooLarge
 	}
 
 	decoder := json.NewDecoder(bytes.NewReader(raw))

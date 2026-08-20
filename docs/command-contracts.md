@@ -18,6 +18,8 @@ Initial global flags:
 
 Global flags precede the command. Command-specific flags follow the command or subcommand.
 
+The order of global flags does not change their meaning, so `--help --json` and `--json --help` both emit JSON help. `--help` and `--version` cannot be combined. A failure before command routing uses `global` as the JSON envelope's `command` value.
+
 ## Output streams
 
 | Mode | Success | Expected error |
@@ -184,7 +186,7 @@ devkit jwt inspect [token]
 ```
 
 - Reads a positional token when provided; otherwise reads one token from stdin.
-- Rejects token input larger than 1 MiB.
+- Rejects raw token input larger than 1 MiB before trimming surrounding stdin whitespace.
 - Documentation should recommend stdin because arguments may be visible in shell history or process listings.
 - Decodes JWT header and payload using base64url rules.
 - Does not verify the signature or establish authenticity.
@@ -210,12 +212,13 @@ devkit json pretty [file]
 ```
 
 - Reads a file or stdin.
+- Rejects input larger than 16 MiB before parsing to bound memory and JSON output.
 - Accepts exactly one JSON value plus optional surrounding whitespace.
 - Preserves JSON number precision rather than implicitly converting numbers through `float64`.
 - Does not overwrite the input file.
 - Human output is indented JSON.
 - JSON-mode data contains `value`, which may hold any JSON type.
-- Malformed JSON or trailing content is data error `3`; read failure is operation error `4`.
+- Malformed, trailing, or oversized JSON is data error `3`; read failure is operation error `4`.
 
 ```json
 {

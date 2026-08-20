@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -27,27 +28,30 @@ Global flags:
   --version    show the DevKit version
 
 Commands:
-  uuid         generate cryptographically secure UUIDs
-  secret       generate cryptographically secure secrets
-  hash         hash a file or standard input
-  jwt inspect  decode JWT header and claims without verification
-  json pretty  format JSON for readability
-  json minify  remove insignificant JSON whitespace
-  env diff     compare dotenv key sets without exposing values
-  file inspect inspect a regular file's type, size, extension, and SHA-256
-  repo inspect detect repository metadata without reading file contents
-  text inspect inspect encoding, BOM, line endings, and line counts
-  port inspect inspect local TCP port availability
+  uuid              generate cryptographically secure UUIDs
+  secret            generate cryptographically secure secrets
+  hash              hash a file or standard input
+  hash verify       verify a file or standard input checksum
+  jwt inspect       decode JWT header and claims without verification
+  json pretty       format JSON for readability
+  json minify       remove insignificant JSON whitespace
+  env diff          compare dotenv key sets without exposing values
+  file inspect      inspect a regular file's type, size, extension, and SHA-256
+  repo inspect      detect repository metadata without reading file contents
+  text inspect      inspect encoding, BOM, line endings, and line counts
+  port inspect      inspect local TCP port availability
   timestamp convert convert explicit timestamp formats to UTC
-  base64 encode encode file or standard input as Base64
-  base64 decode decode Base64 to original bytes
+  base64 encode     encode file or standard input as Base64
+  base64 decode     decode Base64 to original bytes
+  help              show help
+  version           show the DevKit version
 `
 
 // Run executes the CLI and returns the process exit code.
 func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version string) int {
 	jsonMode, remaining, parseErr := parseGlobalFlags(args)
 	if parseErr != nil {
-		return writeFailure(stdout, stderr, jsonMode, "", "invalid_usage", parseErr.Error(), ExitUsage)
+		return writeFailure(stdout, stderr, jsonMode, "global", "invalid_usage", parseErr.Error(), ExitUsage)
 	}
 
 	if len(remaining) == 0 {
@@ -97,22 +101,35 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 }
 
 func parseGlobalFlags(args []string) (jsonMode bool, remaining []string, err error) {
+	action := ""
 	for index, arg := range args {
 		switch arg {
 		case "--json":
 			jsonMode = true
 		case "--help":
-			return jsonMode, []string{"help"}, nil
+			if action == "version" {
+				return jsonMode, nil, errors.New("global flags --help and --version cannot be combined")
+			}
+			action = "help"
 		case "--version":
-			return jsonMode, []string{"version"}, nil
+			if action == "help" {
+				return jsonMode, nil, errors.New("global flags --help and --version cannot be combined")
+			}
+			action = "version"
 		default:
 			if strings.HasPrefix(arg, "-") {
 				return jsonMode, nil, fmt.Errorf("unknown global flag %q", arg)
+			}
+			if action != "" {
+				return jsonMode, []string{action}, nil
 			}
 			return jsonMode, args[index:], nil
 		}
 	}
 
+	if action != "" {
+		return jsonMode, []string{action}, nil
+	}
 	return jsonMode, nil, nil
 }
 

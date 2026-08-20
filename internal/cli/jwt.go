@@ -91,6 +91,9 @@ func readJWTToken(args []string, stdin io.Reader) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if len(raw) > jwtinspect.MaxTokenSize {
+		return string(raw), nil
+	}
 	return strings.TrimSpace(string(raw)), nil
 }
 

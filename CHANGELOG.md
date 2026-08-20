@@ -20,6 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Distinguished bind-access-denied ports from generic probe failures.
+- Made global help/version JSON behavior independent of global-flag order and identified pre-routing JSON errors with the `global` command name.
+- Bounded JSON input at 16 MiB and enforced the JWT stdin limit before trimming whitespace.
+- Listed all callable commands consistently in root help.
 
 ### Tests
 
