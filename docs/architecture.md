@@ -35,6 +35,7 @@ internal/
     repoinspect/
     textinspect/
     portinspect/
+    timestamp/
 testdata/
 docs/
 ```

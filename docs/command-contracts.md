@@ -361,6 +361,32 @@ devkit port inspect [--host IP] <port>
 
 Invalid host, port, or usage is error `2`; an unclassified operating-system probe failure is operation error `4`.
 
+## `timestamp convert`
+
+```text
+devkit timestamp convert [--from unix|unix-ms|rfc3339] <value>
+```
+
+- Converts exactly one timestamp value; `--from` defaults to `unix` seconds.
+- Requires an explicit supported format rather than guessing whether a numeric value uses seconds or milliseconds.
+- Accepts signed base-10 integers for `unix` and `unix-ms` and RFC3339 with optional fractional seconds for `rfc3339`.
+- Normalizes calendar output to UTC using RFC3339Nano formatting, independent of the machine timezone.
+- Reports Unix seconds, Unix milliseconds, and the nanosecond fraction within the second.
+- Preserves RFC3339 nanosecond precision through `unix_seconds` plus `subsecond_nanoseconds`; `unix_milliseconds` is the corresponding millisecond representation.
+- Rejects values outside years `0000` through `9999`, the range representable by the documented RFC3339 output.
+
+```json
+{
+  "input_format": "rfc3339",
+  "utc": "2026-08-20T03:30:15.123456789Z",
+  "unix_seconds": 1787196615,
+  "unix_milliseconds": 1787196615123,
+  "subsecond_nanoseconds": 123456789
+}
+```
+
+Unsupported formats and invalid command usage are error `2`; malformed or out-of-range timestamp values are data error `3`.
+
 ## Contract testing
 
 Each command must test:

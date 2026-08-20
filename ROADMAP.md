@@ -59,11 +59,11 @@ The milestone is complete when:
 - Validate `repo inspect` as a deterministic preflight for human and agent workflows.
 - Validate `text inspect` against cross-platform files and editor workflows.
 - Validate portable `port inspect` behavior before adding optional process-owner lookup.
+- Validate `timestamp convert` against logs, databases, and API payloads.
 
 Potential candidates, subject to demonstrated need:
 
 - Base64 encode/decode.
-- Timestamp conversion.
 - Optional process-owner lookup for `port inspect`.
 
 ## Later — Programmatic integration

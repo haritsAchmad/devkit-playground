@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `repo inspect` command for deterministic, content-free detection of common repository metadata.
 - `text inspect` command for streaming encoding, BOM, UTF-8 validity, line-ending, line-count, and final-newline inspection.
 - `port inspect` command for portable, connection-free local TCP availability checks.
+- `timestamp convert` command for explicit Unix, Unix-millisecond, and RFC3339 conversion to deterministic UTC output.
 - Fuzz targets for JWT, dotenv, JSON, file-inspection, and text-inspection parsing paths.
 
 ### Changed
