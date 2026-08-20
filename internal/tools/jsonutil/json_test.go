@@ -68,6 +68,20 @@ func TestParseReportsReadFailure(t *testing.T) {
 	}
 }
 
+func FuzzParse(f *testing.F) {
+	f.Add(`{"value":9007199254740993}`)
+	f.Add(`{} trailing`)
+	f.Fuzz(func(t *testing.T, input string) {
+		document, err := Parse(strings.NewReader(input))
+		if err != nil {
+			return
+		}
+		if _, err := document.Minify(); err != nil {
+			t.Fatalf("valid parsed document failed to minify: %v", err)
+		}
+	})
+}
+
 type errorReader struct{}
 
 func (errorReader) Read([]byte) (int, error) {

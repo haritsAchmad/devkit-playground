@@ -68,6 +68,14 @@ func TestInspectRejectsOversizedToken(t *testing.T) {
 	}
 }
 
+func FuzzInspect(f *testing.F) {
+	f.Add(makeToken(`{"alg":"HS256"}`, `{"sub":"123"}`, "signature"))
+	f.Add("not-a-token")
+	f.Fuzz(func(t *testing.T, token string) {
+		_, _ = Inspect(token)
+	})
+}
+
 func makeToken(header, claims, signature string) string {
 	encode := base64.RawURLEncoding.EncodeToString
 	return encode([]byte(header)) + "." + encode([]byte(claims)) + "." + encode([]byte(signature))

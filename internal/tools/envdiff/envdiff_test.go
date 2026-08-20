@@ -59,6 +59,14 @@ func TestCompareReportsReadFailure(t *testing.T) {
 	}
 }
 
+func FuzzCompare(f *testing.F) {
+	f.Add("APP_ENV=dev\n", "APP_ENV=prod\n")
+	f.Add("", "")
+	f.Fuzz(func(t *testing.T, reference, target string) {
+		_, _ = Compare(strings.NewReader(reference), strings.NewReader(target))
+	})
+}
+
 type errorReader struct{}
 
 func (errorReader) Read([]byte) (int, error) {

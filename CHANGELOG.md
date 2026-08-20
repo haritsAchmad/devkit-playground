@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `file inspect` command for deterministic content MIME detection, extension consistency checks, size, and SHA-256 metadata.
+- Fuzz targets for JWT, dotenv, JSON, and file-inspection parsing paths.
+
+### Tests
+
+- Locked the contract that global flags such as `--json` must precede the command.
+
 ## [0.1.0] - 2026-08-19
 
 ### Added

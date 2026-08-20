@@ -55,13 +55,15 @@ The milestone is complete when:
 - Fix usability problems discovered through actual use.
 - Improve cross-platform behavior.
 - Stabilize the most useful command and JSON contracts.
+- Validate `file inspect` against real files and agent workflows.
 
 Potential candidates, subject to demonstrated need:
 
 - Base64 encode/decode.
 - Timestamp conversion.
 - Port and process inspection.
-- File type inspection.
+- Repository inspection.
+- Text encoding and line-ending inspection.
 
 ## Later — Programmatic integration
 

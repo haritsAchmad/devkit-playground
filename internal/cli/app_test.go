@@ -110,6 +110,16 @@ func TestRunRejectsUnknownGlobalFlag(t *testing.T) {
 	}
 }
 
+func TestRunTreatsGlobalFlagAfterCommandAsCommandArgument(t *testing.T) {
+	stdout, stderr, exitCode := runForTest(t, "uuid", "--json")
+	if exitCode != ExitUsage {
+		t.Fatalf("exit code = %d, want %d", exitCode, ExitUsage)
+	}
+	if stdout != "" || !strings.Contains(stderr, "flag provided but not defined") {
+		t.Errorf("stdout/stderr = %q/%q, want command-level invalid flag error", stdout, stderr)
+	}
+}
+
 func runForTest(t *testing.T, args ...string) (stdout, stderr string, exitCode int) {
 	t.Helper()
 	return runForTestWithInput(t, "", args...)

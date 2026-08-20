@@ -233,6 +233,34 @@ devkit env diff <reference-file> <target-file>
 
 A successful comparison returns `0` whether differences exist. A future `--check` flag may return non-zero for differences in CI, but it is not part of v0.1. Invalid dotenv data is error `3`; file read failures are error `4`.
 
+## `file inspect`
+
+```text
+devkit file inspect <path>
+```
+
+- Accepts exactly one regular-file path; directories, symlinks, and special files are rejected.
+- Reads the file once to calculate its size and SHA-256 digest.
+- Detects MIME using content sniffing over at most the first 512 bytes. This is useful identification, not a complete file-format validator.
+- Normalizes the final filename extension to lowercase.
+- Reports `extension_check` as `match`, `mismatch`, or `unknown` using a small deterministic mapping of well-known binary formats.
+- Uses `unknown` when either the extension is absent or the detected MIME does not have a stable built-in mapping.
+- Returns the supplied path because identifying the inspected file is part of the explicit result. Errors do not echo the path.
+
+```json
+{
+  "path": "document.pdf.exe",
+  "name": "document.pdf.exe",
+  "extension": ".exe",
+  "size_bytes": 183920,
+  "detected_mime": "application/pdf",
+  "extension_check": "mismatch",
+  "sha256": "lowercase-hex-digest"
+}
+```
+
+Invalid usage is error `2`; a non-regular input is data error `3`; metadata, open, and read failures are operation error `4`.
+
 ## Contract testing
 
 Each command must test:
