@@ -336,6 +336,8 @@ devkit text inspect <path>
 - Reports total bytes, a recognized Unicode BOM, detected encoding, and UTF-8 validity.
 - Detects UTF-8, UTF-8 BOM, UTF-16LE/BE BOM, and UTF-32LE/BE BOM. Invalid UTF-8 without a recognized BOM is `unknown`.
 - For valid UTF-8, reports logical line count, final-newline presence, LF/CRLF/CR counts, and a newline style of `lf`, `crlf`, `cr`, `mixed`, or `none`.
+- For valid UTF-8, reports every non-ASCII code point with its 1-based line and column, classification, and suspicious status. Findings are capped at 100 while aggregate counts remain complete.
+- Suspicious classifications include invisible format characters, unusual Unicode whitespace, combining marks, modifier letters, Greek or Cyrillic letters, and quote-like non-ASCII punctuation. Common typography such as em dashes and other non-ASCII characters are informational.
 - A CRLF sequence counts as one newline and one line terminator.
 - An empty file has zero lines; a file ending in a newline does not gain an additional empty line.
 - `line_analysis` is `null` for unsupported or invalid encodings rather than presenting byte-level guesses as decoded text facts.
@@ -355,6 +357,12 @@ devkit text inspect <path>
     "crlf": 0,
     "cr": 0,
     "final_newline": true
+  },
+  "unicode_analysis": {
+    "non_ascii": 0,
+    "suspicious": 0,
+    "findings": [],
+    "findings_truncated": false
   }
 }
 ```

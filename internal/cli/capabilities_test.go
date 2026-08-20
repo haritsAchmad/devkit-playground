@@ -46,6 +46,9 @@ func TestRunCapabilitiesJSONIsStableAndComplete(t *testing.T) {
 		if !validCategories[item.Category] || !validSensitivity[item.OutputSensitivity] || !validEffects[item.SideEffects] {
 			t.Errorf("capability = %+v, contains an unknown metadata value", item)
 		}
+		if _, registered := capabilityCategories[item.Category]; !registered {
+			t.Errorf("capability %q uses unregistered category %q", item.Name, item.Category)
+		}
 		for _, source := range item.InputSources {
 			if !validSources[source] {
 				t.Errorf("capability %q has unknown input source %q", item.Name, source)
@@ -113,6 +116,17 @@ func TestRunCapabilitiesRejectsUnknownCategory(t *testing.T) {
 	}
 	if envelope.Error.Code != "invalid_category" {
 		t.Errorf("error code = %q, want invalid_category", envelope.Error.Code)
+	}
+}
+
+func TestFilterCapabilitiesAcceptsKnownEmptyCategory(t *testing.T) {
+	const category = "future"
+	capabilityCategories[category] = struct{}{}
+	t.Cleanup(func() { delete(capabilityCategories, category) })
+
+	commands, valid := filterCapabilities(category)
+	if !valid || len(commands) != 0 {
+		t.Errorf("filterCapabilities(%q) = (%v, %t), want empty valid result", category, commands, valid)
 	}
 }
 

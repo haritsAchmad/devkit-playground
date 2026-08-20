@@ -4,9 +4,13 @@ package textinspect
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"io"
+	"unicode"
 	"unicode/utf8"
 )
+
+const maxUnicodeFindings = 100
 
 type LineAnalysis struct {
 	Style        string
@@ -17,12 +21,29 @@ type LineAnalysis struct {
 	FinalNewline bool
 }
 
+type UnicodeFinding struct {
+	Line       int64
+	Column     int64
+	Rune       string
+	CodePoint  string
+	Kind       string
+	Suspicious bool
+}
+
+type UnicodeAnalysis struct {
+	NonASCII          int64
+	Suspicious        int64
+	Findings          []UnicodeFinding
+	FindingsTruncated bool
+}
+
 type Result struct {
-	Bytes        int64
-	Encoding     string
-	BOM          string
-	UTF8Valid    bool
-	LineAnalysis *LineAnalysis
+	Bytes           int64
+	Encoding        string
+	BOM             string
+	UTF8Valid       bool
+	LineAnalysis    *LineAnalysis
+	UnicodeAnalysis *UnicodeAnalysis
 }
 
 // Inspect streams input and reports UTF encoding and newline metadata.
@@ -38,6 +59,8 @@ func Inspect(input io.Reader) (Result, error) {
 	var lf, crlf, cr int64
 	var pendingCR, hasContent bool
 	var lastRune rune
+	unicodeAnalysis := &UnicodeAnalysis{}
+	var line, column int64 = 1, 0
 	firstRune := true
 	for {
 		runeValue, size, readErr := reader.ReadRune()
@@ -58,6 +81,24 @@ func Inspect(input io.Reader) (Result, error) {
 		firstRune = false
 		hasContent = true
 		lastRune = runeValue
+		if runeValue != '\r' && runeValue != '\n' {
+			column++
+			if runeValue > unicode.MaxASCII {
+				kind, suspicious := classifyUnicode(runeValue)
+				unicodeAnalysis.NonASCII++
+				if suspicious {
+					unicodeAnalysis.Suspicious++
+				}
+				if len(unicodeAnalysis.Findings) < maxUnicodeFindings {
+					unicodeAnalysis.Findings = append(unicodeAnalysis.Findings, UnicodeFinding{
+						Line: line, Column: column, Rune: string(runeValue),
+						CodePoint: codePoint(runeValue), Kind: kind, Suspicious: suspicious,
+					})
+				} else {
+					unicodeAnalysis.FindingsTruncated = true
+				}
+			}
+		}
 
 		if pendingCR {
 			if runeValue == '\n' {
@@ -71,8 +112,12 @@ func Inspect(input io.Reader) (Result, error) {
 		switch runeValue {
 		case '\r':
 			pendingCR = true
+			line++
+			column = 0
 		case '\n':
 			lf++
+			line++
+			column = 0
 		}
 	}
 	if pendingCR {
@@ -93,7 +138,49 @@ func Inspect(input io.Reader) (Result, error) {
 		}
 	}
 	result.LineAnalysis = &analysis
+	result.UnicodeAnalysis = unicodeAnalysis
 	return result, nil
+}
+
+func classifyUnicode(r rune) (string, bool) {
+	switch {
+	case unicode.Is(unicode.Cf, r):
+		return "invisible_format", true
+	case unicode.IsSpace(r):
+		return "unusual_whitespace", true
+	case unicode.IsMark(r):
+		return "combining_mark", true
+	case unicode.Is(unicode.Lm, r):
+		return "modifier_letter", true
+	case unicode.Is(unicode.Cyrillic, r):
+		return "cyrillic_letter", true
+	case unicode.Is(unicode.Greek, r):
+		return "greek_letter", true
+	case isSuspiciousPunctuation(r):
+		return "non_ascii_punctuation", true
+	case unicode.IsPunct(r):
+		return "non_ascii_punctuation", false
+	default:
+		return "non_ascii", false
+	}
+}
+
+func isSuspiciousPunctuation(r rune) bool {
+	switch r {
+	case '\u2018', '\u2019', '\u201a', '\u201b',
+		'\u201c', '\u201d', '\u201e', '\u201f',
+		'\u2032', '\u2033', '\uff07', '\uff02':
+		return true
+	default:
+		return false
+	}
+}
+
+func codePoint(r rune) string {
+	if r <= 0xffff {
+		return fmt.Sprintf("U+%04X", r)
+	}
+	return fmt.Sprintf("U+%06X", r)
 }
 
 func detectBOM(prefix []byte) (string, int) {

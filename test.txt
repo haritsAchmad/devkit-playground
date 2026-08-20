@@ -1,0 +1,30 @@
+Normal apostrophe:
+Today's deployment passed.
+
+Curly apostrophe:
+Today’s deployment passed.
+
+Modifier apostrophe:
+Todayʼs deployment passed.
+
+Mixed Latin/Cyrillic:
+password
+pаssword
+
+Mixed o variants:
+token
+tοken
+tоken
+
+Accented text:
+café
+café
+
+Invisible separator:
+hello​world
+
+Non-breaking space:
+hello world
+
+Normal space:
+hello world

@@ -54,10 +54,15 @@ var commandCapabilities = []capability{
 	{Name: "port inspect", Category: "inspect", Summary: "inspect local TCP port availability", InputSources: []string{"arguments"}, OutputSensitivity: "normal", SideEffects: "temporary_local_bind", Offline: true, SupportsJSON: true},
 	{Name: "repo inspect", Category: "inspect", Summary: "detect repository metadata without reading contents", InputSources: []string{"directory"}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
 	{Name: "secret", Category: "generate", Summary: "generate cryptographically secure secrets", InputSources: []string{"arguments"}, OutputSensitivity: "sensitive", SideEffects: "none", Offline: true, SupportsJSON: true},
-	{Name: "text inspect", Category: "inspect", Summary: "inspect encoding, BOM, and line endings", InputSources: []string{"file"}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
+	{Name: "text inspect", Category: "inspect", Summary: "inspect encoding, line endings, and Unicode anomalies", InputSources: []string{"file"}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
 	{Name: "timestamp convert", Category: "transform", Summary: "convert explicit timestamp formats to UTC", InputSources: []string{"arguments"}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
 	{Name: "uuid", Category: "generate", Summary: "generate cryptographically secure UUIDs", InputSources: []string{"arguments"}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
 	{Name: "version", Category: "system", Summary: "show the DevKit version", InputSources: []string{}, OutputSensitivity: "normal", SideEffects: "none", Offline: true, SupportsJSON: true},
+}
+
+var capabilityCategories = map[string]struct{}{
+	"compare": {}, "generate": {}, "inspect": {},
+	"integrity": {}, "system": {}, "transform": {},
 }
 
 func runCapabilities(args []string, stdout, stderr io.Writer, jsonMode bool) int {
@@ -117,13 +122,16 @@ func filterCapabilities(category string) ([]capability, bool) {
 	if category == "" {
 		return commandCapabilities, true
 	}
+	if _, valid := capabilityCategories[category]; !valid {
+		return nil, false
+	}
 	result := make([]capability, 0)
 	for _, item := range commandCapabilities {
 		if item.Category == category {
 			result = append(result, item)
 		}
 	}
-	return result, len(result) > 0
+	return result, true
 }
 
 func writeCapabilitiesHelp(stdout io.Writer, jsonMode bool) int {

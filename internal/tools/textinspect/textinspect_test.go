@@ -57,6 +57,45 @@ func TestInspectEmptyInput(t *testing.T) {
 	}
 }
 
+func TestInspectReportsUnicodeFindings(t *testing.T) {
+	input := []byte("café\npаssword\nhello\u200bworld\ncafe\u0301\nhello\u00a0world\nToday\u02bcs")
+	result, err := Inspect(bytes.NewReader(input))
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	if result.UnicodeAnalysis == nil {
+		t.Fatal("UnicodeAnalysis = nil, want findings")
+	}
+	if result.UnicodeAnalysis.NonASCII != 6 || result.UnicodeAnalysis.Suspicious != 5 {
+		t.Errorf("UnicodeAnalysis = %+v, want 6 non-ASCII and 5 suspicious", result.UnicodeAnalysis)
+	}
+	wantKinds := []string{"non_ascii", "cyrillic_letter", "invisible_format", "combining_mark", "unusual_whitespace", "modifier_letter"}
+	for index, want := range wantKinds {
+		if got := result.UnicodeAnalysis.Findings[index].Kind; got != want {
+			t.Errorf("finding %d kind = %q, want %q", index, got, want)
+		}
+	}
+	if finding := result.UnicodeAnalysis.Findings[2]; finding.Line != 3 || finding.Column != 6 || finding.CodePoint != "U+200B" {
+		t.Errorf("zero-width finding = %+v, want line 3 column 6 U+200B", finding)
+	}
+}
+
+func TestInspectTreatsCommonTypographyAsInformational(t *testing.T) {
+	result, err := Inspect(bytes.NewReader([]byte("words—more\nToday’s")))
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	if result.UnicodeAnalysis == nil || len(result.UnicodeAnalysis.Findings) != 2 {
+		t.Fatalf("UnicodeAnalysis = %+v, want two findings", result.UnicodeAnalysis)
+	}
+	if result.UnicodeAnalysis.Findings[0].Suspicious {
+		t.Errorf("em dash = %+v, want informational typography", result.UnicodeAnalysis.Findings[0])
+	}
+	if !result.UnicodeAnalysis.Findings[1].Suspicious {
+		t.Errorf("curly apostrophe = %+v, want suspicious lookalike", result.UnicodeAnalysis.Findings[1])
+	}
+}
+
 func FuzzInspect(f *testing.F) {
 	f.Add([]byte("first\r\nsecond\n"))
 	f.Add([]byte{0xff, 0xfe, 'x', 0})

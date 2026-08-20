@@ -50,6 +50,22 @@ func TestRunTextInspectJSON(t *testing.T) {
 	}
 }
 
+func TestRunTextInspectReportsSuspiciousUnicode(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "unicode.txt")
+	if err := os.WriteFile(path, []byte("pаssword\nhello\u200bworld"), 0o600); err != nil {
+		t.Fatalf("write fixture: %v", err)
+	}
+	stdout, stderr, exitCode := runForTest(t, "text", "inspect", path)
+	if exitCode != ExitSuccess || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d", stdout, stderr, exitCode)
+	}
+	for _, expected := range []string{"Suspicious Unicode: 2", "U+0430", "cyrillic_letter", "U+200B", "invisible_format"} {
+		if !strings.Contains(stdout, expected) {
+			t.Errorf("stdout = %q, want %q", stdout, expected)
+		}
+	}
+}
+
 func TestRunTextInspectRejectsDirectoryWithoutExposingPath(t *testing.T) {
 	path := t.TempDir()
 	stdout, stderr, exitCode := runForTest(t, "--json", "text", "inspect", path)

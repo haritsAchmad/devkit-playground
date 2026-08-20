@@ -1,0 +1,9 @@
+Nah, ini beberapa temuan/kritik konkret:
+
+1. Bug nyata di capabilities.go — fungsi filterCapabilities nge-anggap kategori "invalid" kalau hasil filter-nya kosong (len(result) > 0). Masalahnya: dia gak bedain antara "nama kategori emang salah ketik" vs "kategori valid tapi kebetulan belum ada command di situ." Sekarang gak keliatan efeknya karena semua kategori kepake, tapi kalau nanti kamu nambah kategori baru sebelum ngisi command-nya, dia bakal salah nolak dengan pesan invalid_category padahal kategorinya sah.
+
+2. go.mod minta Go 1.26.1 — itu versi yang sangat baru/bleeding-edge. Sandbox gw sendiri cuma punya Go 1.22 dari apt, dan gak bisa download toolchain 1.26.1 karena proxy Go dibatasi jaringan. Ini bukan bug, tapi worth dipikirin: kalau ada kontributor lain atau CI runner yang belum ke-update, mereka bakal stuck. Mungkin worth turunin requirement ke versi yang lebih stabil kecuali kamu emang butuh fitur spesifik dari 1.26.
+
+3. Minor housekeeping — ada fake.pdf nangkring di root repo, bukan di folder testdata/ atau semacamnya. Kalau itu emang fixture buat testing file inspect, mending dipindah ke folder testdata biar jelas maksudnya bukan asset acak.
+
+Buat rencana kamu jadiin devkit ini "tool layer" buat local-agent — desainnya udah pas banget: capabilities --json ngasih kontrak machine-readable, OutputSensitivity field udah mikirin mana data yang boleh di-log agent dan mana yang enggak (sensitive buat jwt/secret). Itu pemikiran yang jarang ada di project "playground."

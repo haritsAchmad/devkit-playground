@@ -18,6 +18,7 @@ Arguments:
   path                  regular text file to inspect
 
 Line analysis is available for valid UTF-8, including UTF-8 with a BOM.
+Unicode analysis reports non-ASCII code points and flags suspicious characters.
 Other encodings are identified conservatively and do not receive line counts.
 `
 
@@ -31,12 +32,29 @@ type textLineData struct {
 }
 
 type textInspectData struct {
-	Path         string        `json:"path"`
-	Bytes        int64         `json:"bytes"`
-	Encoding     string        `json:"encoding"`
-	BOM          string        `json:"bom"`
-	UTF8Valid    bool          `json:"utf8_valid"`
-	LineAnalysis *textLineData `json:"line_analysis"`
+	Path            string           `json:"path"`
+	Bytes           int64            `json:"bytes"`
+	Encoding        string           `json:"encoding"`
+	BOM             string           `json:"bom"`
+	UTF8Valid       bool             `json:"utf8_valid"`
+	LineAnalysis    *textLineData    `json:"line_analysis"`
+	UnicodeAnalysis *textUnicodeData `json:"unicode_analysis"`
+}
+
+type textUnicodeFindingData struct {
+	Line       int64  `json:"line"`
+	Column     int64  `json:"column"`
+	Character  string `json:"character"`
+	CodePoint  string `json:"code_point"`
+	Kind       string `json:"kind"`
+	Suspicious bool   `json:"suspicious"`
+}
+
+type textUnicodeData struct {
+	NonASCII          int64                    `json:"non_ascii"`
+	Suspicious        int64                    `json:"suspicious"`
+	Findings          []textUnicodeFindingData `json:"findings"`
+	FindingsTruncated bool                     `json:"findings_truncated"`
 }
 
 func runText(args []string, stdout, stderr io.Writer, jsonMode bool) int {
@@ -94,6 +112,20 @@ func runTextInspect(args []string, stdout, stderr io.Writer, jsonMode bool) int 
 			FinalNewline: result.LineAnalysis.FinalNewline,
 		}
 	}
+	if result.UnicodeAnalysis != nil {
+		data.UnicodeAnalysis = &textUnicodeData{
+			NonASCII:          result.UnicodeAnalysis.NonASCII,
+			Suspicious:        result.UnicodeAnalysis.Suspicious,
+			FindingsTruncated: result.UnicodeAnalysis.FindingsTruncated,
+			Findings:          make([]textUnicodeFindingData, 0, len(result.UnicodeAnalysis.Findings)),
+		}
+		for _, finding := range result.UnicodeAnalysis.Findings {
+			data.UnicodeAnalysis.Findings = append(data.UnicodeAnalysis.Findings, textUnicodeFindingData{
+				Line: finding.Line, Column: finding.Column, Character: finding.Rune,
+				CodePoint: finding.CodePoint, Kind: finding.Kind, Suspicious: finding.Suspicious,
+			})
+		}
+	}
 
 	if jsonMode {
 		if err := output.WriteJSONSuccess(stdout, "text inspect", data); err != nil {
@@ -119,6 +151,26 @@ func writeTextInspectHuman(stdout io.Writer, data textInspectData) int {
 		data.LineAnalysis.CRLF, data.LineAnalysis.CR, data.LineAnalysis.FinalNewline)
 	if err != nil {
 		return ExitInternal
+	}
+	if data.UnicodeAnalysis == nil {
+		return ExitSuccess
+	}
+	if _, err := fmt.Fprintf(stdout, "Non-ASCII characters: %d\nSuspicious Unicode: %d\n", data.UnicodeAnalysis.NonASCII, data.UnicodeAnalysis.Suspicious); err != nil {
+		return ExitInternal
+	}
+	for _, finding := range data.UnicodeAnalysis.Findings {
+		marker := "info"
+		if finding.Suspicious {
+			marker = "suspicious"
+		}
+		if _, err := fmt.Fprintf(stdout, "  %d:%d  %s  %q  %s  [%s]\n", finding.Line, finding.Column, finding.CodePoint, finding.Character, finding.Kind, marker); err != nil {
+			return ExitInternal
+		}
+	}
+	if data.UnicodeAnalysis.FindingsTruncated {
+		if _, err := io.WriteString(stdout, "  ... findings truncated\n"); err != nil {
+			return ExitInternal
+		}
 	}
 	return ExitSuccess
 }
