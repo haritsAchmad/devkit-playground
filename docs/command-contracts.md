@@ -295,6 +295,42 @@ devkit repo inspect [path]
 
 Invalid usage is error `2`; a non-directory root is data error `3`; metadata access failures are operation error `4`.
 
+## `text inspect`
+
+```text
+devkit text inspect <path>
+```
+
+- Accepts exactly one regular-file path; directories, symlinks, and special files are rejected.
+- Streams input instead of loading the complete file into memory.
+- Reports total bytes, a recognized Unicode BOM, detected encoding, and UTF-8 validity.
+- Detects UTF-8, UTF-8 BOM, UTF-16LE/BE BOM, and UTF-32LE/BE BOM. Invalid UTF-8 without a recognized BOM is `unknown`.
+- For valid UTF-8, reports logical line count, final-newline presence, LF/CRLF/CR counts, and a newline style of `lf`, `crlf`, `cr`, `mixed`, or `none`.
+- A CRLF sequence counts as one newline and one line terminator.
+- An empty file has zero lines; a file ending in a newline does not gain an additional empty line.
+- `line_analysis` is `null` for unsupported or invalid encodings rather than presenting byte-level guesses as decoded text facts.
+- Returns the supplied path as part of the explicit result. Errors do not echo it.
+
+```json
+{
+  "path": "README.md",
+  "bytes": 4905,
+  "encoding": "utf-8",
+  "bom": "none",
+  "utf8_valid": true,
+  "line_analysis": {
+    "style": "lf",
+    "line_count": 122,
+    "lf": 122,
+    "crlf": 0,
+    "cr": 0,
+    "final_newline": true
+  }
+}
+```
+
+Invalid usage is error `2`; a non-regular input is data error `3`; metadata, open, and read failures are operation error `4`.
+
 ## Contract testing
 
 Each command must test:

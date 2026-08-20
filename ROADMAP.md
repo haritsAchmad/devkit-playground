@@ -57,13 +57,13 @@ The milestone is complete when:
 - Stabilize the most useful command and JSON contracts.
 - Validate `file inspect` against real files and agent workflows.
 - Validate `repo inspect` as a deterministic preflight for human and agent workflows.
+- Validate `text inspect` against cross-platform files and editor workflows.
 
 Potential candidates, subject to demonstrated need:
 
 - Base64 encode/decode.
 - Timestamp conversion.
 - Port and process inspection.
-- Text encoding and line-ending inspection.
 
 ## Later — Programmatic integration
 
