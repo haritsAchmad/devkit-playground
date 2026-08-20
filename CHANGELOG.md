@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `file inspect` command for deterministic content MIME detection, extension consistency checks, size, and SHA-256 metadata.
+- `repo inspect` command for deterministic, content-free detection of common repository metadata.
 - Fuzz targets for JWT, dotenv, JSON, and file-inspection parsing paths.
 
 ### Tests

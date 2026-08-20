@@ -261,6 +261,40 @@ devkit file inspect <path>
 
 Invalid usage is error `2`; a non-regular input is data error `3`; metadata, open, and read failures are operation error `4`.
 
+## `repo inspect`
+
+```text
+devkit repo inspect [path]
+```
+
+- Inspects the named directory, defaulting to the current directory.
+- Rejects files, symlinks, and other non-directory roots.
+- Detects a Git marker, root-level project manifests and lockfiles, common Docker files, root-level test configuration, and known migration directories.
+- Does not read source files, manifest contents, lockfile contents, configuration contents, environment files, or secrets.
+- Reports only known relative metadata paths, plus the explicitly supplied root path.
+- Returns arrays in deterministic order and uses empty arrays rather than `null` when no markers are found.
+- Initial detection is intentionally root-oriented; recursive workspace and monorepo discovery are outside this contract.
+
+```json
+{
+  "path": ".",
+  "git_repository": true,
+  "projects": [
+    {
+      "ecosystem": "go",
+      "manifest": "go.mod",
+      "lockfiles": ["go.sum"]
+    }
+  ],
+  "package_managers": ["go"],
+  "docker_files": ["Dockerfile"],
+  "test_configs": [],
+  "migration_dirs": ["migrations"]
+}
+```
+
+Invalid usage is error `2`; a non-directory root is data error `3`; metadata access failures are operation error `4`.
+
 ## Contract testing
 
 Each command must test:

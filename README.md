@@ -25,6 +25,7 @@ devkit jwt inspect < token.txt
 devkit json pretty response.json
 devkit env diff .env.example .env
 devkit file inspect ./artifact.zip
+devkit repo inspect .
 ```
 
 ### Programs and AI agents
@@ -62,6 +63,7 @@ DevKit is not an AI agent. It may eventually serve as a deterministic tool layer
 | `devkit json minify` | Remove insignificant JSON whitespace |
 | `devkit env diff` | Compare environment-file key sets without exposing values |
 | `devkit file inspect` | Inspect file type, size, extension consistency, and SHA-256 |
+| `devkit repo inspect` | Detect common repository metadata without reading file contents |
 
 The precise interfaces are defined in [Command contracts](docs/command-contracts.md).
 
@@ -101,6 +103,7 @@ go run ./cmd/devkit --help
 go run ./cmd/devkit uuid
 go run ./cmd/devkit secret
 go run ./cmd/devkit file inspect README.md
+go run ./cmd/devkit --json repo inspect .
 ```
 
 ## Installing locally

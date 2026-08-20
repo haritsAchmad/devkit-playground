@@ -31,6 +31,8 @@ internal/
     jwt/
     jsonutil/
     envdiff/
+    fileinspect/
+    repoinspect/
 testdata/
 docs/
 ```
