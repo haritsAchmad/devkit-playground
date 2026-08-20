@@ -13,7 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `text inspect` command for streaming encoding, BOM, UTF-8 validity, line-ending, line-count, and final-newline inspection.
 - `port inspect` command for portable, connection-free local TCP availability checks.
 - `timestamp convert` command for explicit Unix, Unix-millisecond, and RFC3339 conversion to deterministic UTC output.
-- Fuzz targets for JWT, dotenv, JSON, file-inspection, and text-inspection parsing paths.
+- `base64 encode` and `base64 decode` commands with standard/URL-safe alphabets, explicit padding, bounded input, and binary-safe JSON transport.
+- Fuzz targets for JWT, dotenv, JSON, Base64, file-inspection, text-inspection, and timestamp parsing paths.
 
 ### Changed
 

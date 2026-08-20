@@ -387,6 +387,38 @@ devkit timestamp convert [--from unix|unix-ms|rfc3339] <value>
 
 Unsupported formats and invalid command usage are error `2`; malformed or out-of-range timestamp values are data error `3`.
 
+## `base64 encode` and `base64 decode`
+
+```text
+devkit base64 encode [--variant standard|url] [--padding padded|raw] [file]
+devkit base64 decode [--variant standard|url] [--padding padded|raw] [file]
+```
+
+- Reads the named file, or stdin when no file is supplied or the path is `-`.
+- Supports the standard and URL-safe alphabets with padded or raw encoding; defaults are `standard` and `padded`.
+- Applies the selected alphabet and padding strictly instead of silently accepting a different variant.
+- Limits input to 16 MiB to bound memory and JSON output. Oversized input is rejected before transformation.
+- Encode preserves every input byte. Decode ignores surrounding whitespace and the CR/LF behavior accepted by Go's standard Base64 decoder.
+- Human encode output ends with a newline. Human decode output writes the exact decoded bytes and does not append a newline.
+- JSON encode output uses `representation: "utf-8"` because Base64 text is ASCII.
+- JSON decode output uses `representation: "utf-8"` when decoded bytes are valid UTF-8. For arbitrary binary, `value` carries canonical padded standard Base64 and `representation` is `base64`; `output_bytes` still describes the decoded bytes.
+- `source` is `file` or `stdin` and does not expose a potentially sensitive path. Invalid-data errors never echo input.
+
+```json
+{
+  "operation": "decode",
+  "variant": "standard",
+  "padding": "padded",
+  "input_bytes": 8,
+  "output_bytes": 5,
+  "value": "hello",
+  "representation": "utf-8",
+  "source": "stdin"
+}
+```
+
+Invalid flags and modes are error `2`; invalid or oversized Base64 is data error `3`; file and input read failures are operation error `4`.
+
 ## Contract testing
 
 Each command must test:

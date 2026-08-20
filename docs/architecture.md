@@ -36,6 +36,7 @@ internal/
     textinspect/
     portinspect/
     timestamp/
+    base64util/
 testdata/
 docs/
 ```

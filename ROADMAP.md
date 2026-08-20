@@ -60,10 +60,10 @@ The milestone is complete when:
 - Validate `text inspect` against cross-platform files and editor workflows.
 - Validate portable `port inspect` behavior before adding optional process-owner lookup.
 - Validate `timestamp convert` against logs, databases, and API payloads.
+- Validate Base64 variants and binary JSON transport in real pipelines.
 
 Potential candidates, subject to demonstrated need:
 
-- Base64 encode/decode.
 - Optional process-owner lookup for `port inspect`.
 
 ## Later — Programmatic integration

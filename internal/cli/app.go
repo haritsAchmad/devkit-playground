@@ -39,6 +39,8 @@ Commands:
   text inspect inspect encoding, BOM, line endings, and line counts
   port inspect inspect local TCP port availability
   timestamp convert convert explicit timestamp formats to UTC
+  base64 encode encode file or standard input as Base64
+  base64 decode decode Base64 to original bytes
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -86,6 +88,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runPort(remaining[1:], stdout, stderr, jsonMode)
 	case "timestamp":
 		return runTimestamp(remaining[1:], stdout, stderr, jsonMode)
+	case "base64":
+		return runBase64(remaining[1:], stdin, stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

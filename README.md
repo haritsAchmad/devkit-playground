@@ -29,6 +29,7 @@ devkit repo inspect .
 devkit text inspect README.md
 devkit port inspect 5432
 devkit timestamp convert --from unix-ms 1720000000123
+devkit base64 encode README.md
 ```
 
 ### Programs and AI agents
@@ -70,6 +71,7 @@ DevKit is not an AI agent. It may eventually serve as a deterministic tool layer
 | `devkit text inspect` | Inspect encoding, BOM, line endings, line count, and final newline |
 | `devkit port inspect` | Check whether a local TCP port is available or in use |
 | `devkit timestamp convert` | Convert Unix, Unix-millisecond, and RFC3339 timestamps to UTC |
+| `devkit base64 encode/decode` | Encode or decode standard and URL-safe Base64 |
 
 The precise interfaces are defined in [Command contracts](docs/command-contracts.md).
 
@@ -113,6 +115,7 @@ go run ./cmd/devkit --json repo inspect .
 go run ./cmd/devkit --json text inspect README.md
 go run ./cmd/devkit --json port inspect 5432
 go run ./cmd/devkit --json timestamp convert --from rfc3339 2026-08-20T10:30:15+07:00
+go run ./cmd/devkit base64 encode README.md
 ```
 
 ## Installing locally
