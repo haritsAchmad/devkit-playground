@@ -104,7 +104,7 @@ cd devkit-playground
 go test ./...
 ```
 
-The repository implements all commands planned for v0.1. The remaining milestone work focuses on cross-platform verification, packaging, and real-world validation.
+The repository includes the v0.1 foundation plus the command, hardening, and agent-discovery work prepared for v0.2. Ongoing work focuses on real-world validation and stable pre-v1 contracts.
 
 ## Running from source
 
@@ -141,14 +141,14 @@ devkit --help
 Linux or macOS:
 
 ```sh
-go build -trimpath -ldflags "-X main.version=v0.1.0-dev" -o bin/devkit ./cmd/devkit
+go build -trimpath -ldflags "-X main.version=v0.2.0-dev" -o bin/devkit ./cmd/devkit
 ./bin/devkit --version
 ```
 
 Windows PowerShell:
 
 ```powershell
-go build -trimpath -ldflags "-X main.version=v0.1.0-dev" -o bin/devkit.exe ./cmd/devkit
+go build -trimpath -ldflags "-X main.version=v0.2.0-dev" -o bin/devkit.exe ./cmd/devkit
 .\bin\devkit.exe --version
 ```
 

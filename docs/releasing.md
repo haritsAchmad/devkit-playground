@@ -26,7 +26,8 @@ Each archive also includes the README and MIT License.
    ```
 
 3. Move changelog entries from `Unreleased` into a versioned section with the release date.
-4. Commit and merge the release documentation update before creating the tag.
+4. Confirm README development-version examples and release commands name the target minor version.
+5. Commit and merge the release documentation update before creating the tag.
 
 ## Creating a release candidate
 
@@ -35,8 +36,8 @@ Use a pre-release tag while validating the process:
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v0.1.0-rc.1 -m "DevKit v0.1.0-rc.1"
-git push origin v0.1.0-rc.1
+git tag -a v0.2.0-rc.1 -m "DevKit v0.2.0-rc.1"
+git push origin v0.2.0-rc.1
 ```
 
 The tag starts the Release workflow. It tests the tagged commit, builds all target archives, creates checksums, and creates a draft GitHub Release.
@@ -54,13 +55,13 @@ Before publishing the draft release:
 
 Only publish the draft after these checks pass.
 
-## Stable v0.1.0
+## Stable release
 
 After validating a release candidate, repeat the process with the stable tag:
 
 ```sh
-git tag -a v0.1.0 -m "DevKit v0.1.0"
-git push origin v0.1.0
+git tag -a v0.2.0 -m "DevKit v0.2.0"
+git push origin v0.2.0
 ```
 
 The workflow again creates a draft. Publishing remains a deliberate manual action.
@@ -70,7 +71,7 @@ The workflow again creates a draft. Publishing remains a deliberate manual actio
 PowerShell:
 
 ```powershell
-Get-FileHash -Algorithm SHA256 .\devkit_0.1.0_windows_amd64.zip
+Get-FileHash -Algorithm SHA256 .\devkit_0.2.0_windows_amd64.zip
 ```
 
 Compare the displayed hash with the matching line in `checksums.txt`.

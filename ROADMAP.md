@@ -69,6 +69,13 @@ Potential candidates, subject to demonstrated need:
 
 - Optional process-owner lookup for `port inspect`.
 
+## v0.2 release readiness
+
+- Package the expanded offline toolbox and structured capability discovery.
+- Verify all six release archives and their checksums.
+- Smoke-test the Windows amd64 archive and version injection.
+- Publish only after the draft release artifacts pass review.
+
 ## Later — Programmatic integration
 
 - Use `capabilities` as machine-readable discovery without treating it as an execution adapter.

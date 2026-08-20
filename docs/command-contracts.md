@@ -1,6 +1,6 @@
 # Command Contracts
 
-This document defines the intended v0.1 CLI behavior. It is the implementation target until real usage justifies an explicit contract change.
+This document defines the current pre-v1 CLI behavior. It remains the implementation target until real usage justifies an explicit contract change.
 
 ## Global invocation
 
@@ -85,7 +85,7 @@ The JSON `error.code` provides finer detail than the process exit code. Human an
 - A command that accepts a file reads stdin when the file argument is omitted.
 - A command must reject ambiguous input, such as both piped data and an explicit incompatible source.
 - `-` may be accepted as an explicit stdin path when implementation begins, provided it behaves consistently across commands.
-- Inputs are not modified in place in v0.1.
+- Inputs are not modified in place.
 
 ## `uuid`
 
@@ -243,7 +243,7 @@ devkit env diff <reference-file> <target-file>
 - Compares key names, never values.
 - Ignores blank lines and comments.
 - Accepts an optional `export` prefix and portable keys matching `[A-Za-z_][A-Za-z0-9_]*`.
-- Requires each assignment to be contained on one line in v0.1.
+- Requires each assignment to be contained on one line.
 - Reports keys missing from the target and keys present only in the target.
 - Sorts keys lexicographically for deterministic output.
 - Treats duplicate keys and malformed assignments as data errors.
@@ -261,7 +261,7 @@ devkit env diff <reference-file> <target-file>
 }
 ```
 
-A successful comparison returns `0` whether differences exist. A future `--check` flag may return non-zero for differences in CI, but it is not part of v0.1. Invalid dotenv data is error `3`; file read failures are error `4`.
+A successful comparison returns `0` whether differences exist. A future `--check` flag may return non-zero for differences in CI, but it is not part of the current contract. Invalid dotenv data is error `3`; file read failures are error `4`.
 
 ## `file inspect`
 
