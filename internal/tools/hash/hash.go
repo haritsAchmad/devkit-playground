@@ -4,6 +4,7 @@ package filehash
 import (
 	"crypto/sha256"
 	"crypto/sha512"
+	"crypto/subtle"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -19,11 +20,17 @@ const (
 )
 
 var ErrUnsupportedAlgorithm = errors.New("unsupported hash algorithm")
+var ErrInvalidDigest = errors.New("invalid expected digest")
 
 type Result struct {
 	Algorithm Algorithm
 	Digest    string
 	Bytes     int64
+}
+
+type Verification struct {
+	Result
+	Match bool
 }
 
 // Sum streams input through the selected hash algorithm.
@@ -42,6 +49,34 @@ func Sum(input io.Reader, algorithm Algorithm) (Result, error) {
 		Algorithm: algorithm,
 		Digest:    hex.EncodeToString(hasher.Sum(nil)),
 		Bytes:     bytesRead,
+	}, nil
+}
+
+// Verify streams input and compares its digest with an expected hexadecimal value.
+func Verify(input io.Reader, algorithm Algorithm, expected string) (Verification, error) {
+	expectedBytes, err := hex.DecodeString(expected)
+	if err != nil {
+		return Verification{}, fmt.Errorf("%w: must be hexadecimal", ErrInvalidDigest)
+	}
+	hasher, err := newHasher(algorithm)
+	if err != nil {
+		return Verification{}, err
+	}
+	if len(expectedBytes) != hasher.Size() {
+		return Verification{}, fmt.Errorf("%w: must contain %d hexadecimal characters", ErrInvalidDigest, hasher.Size()*2)
+	}
+	bytesRead, err := io.Copy(hasher, input)
+	if err != nil {
+		return Verification{}, fmt.Errorf("read hash input: %w", err)
+	}
+	actualBytes := hasher.Sum(nil)
+	return Verification{
+		Result: Result{
+			Algorithm: algorithm,
+			Digest:    hex.EncodeToString(actualBytes),
+			Bytes:     bytesRead,
+		},
+		Match: subtle.ConstantTimeCompare(actualBytes, expectedBytes) == 1,
 	}, nil
 }
 

@@ -150,6 +150,33 @@ devkit hash [--algorithm sha256|sha512] [file]
 
 `source` is `file` or `stdin`; it does not expose a potentially sensitive path. File contents are never echoed.
 
+### `hash verify`
+
+```text
+devkit hash verify --expected HEX [--algorithm sha256|sha512] [file]
+```
+
+- Reads the named file, or stdin when no file is supplied or the path is `-`.
+- Uses SHA-256 by default and supports SHA-512 through the existing `--algorithm` flag.
+- Requires an expected hexadecimal digest of exactly the length required by the selected algorithm.
+- Accepts uppercase or lowercase hexadecimal input and reports the computed digest in lowercase.
+- Streams input and compares decoded digest bytes using a constant-time comparison.
+- A match returns success with `verified: true`.
+- A mismatch returns data error `3` with stable JSON code `checksum_mismatch`; callers cannot accidentally treat mismatch as successful verification.
+- Output and errors do not expose the input file path or file contents.
+
+```json
+{
+  "algorithm": "sha256",
+  "digest": "lowercase-hex-digest",
+  "bytes": 1234,
+  "source": "file",
+  "verified": true
+}
+```
+
+Missing or malformed expected digests and unsupported algorithms are usage error `2`; checksum mismatch is data error `3`; file and input read failures are operation error `4`.
+
 ## `jwt inspect`
 
 ```text

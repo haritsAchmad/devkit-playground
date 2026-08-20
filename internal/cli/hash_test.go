@@ -122,3 +122,55 @@ func TestRunHashHelp(t *testing.T) {
 		t.Errorf("stderr = %q, want empty", stderr)
 	}
 }
+
+func TestRunHashVerifyFileAsJSON(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "artifact.bin")
+	if err := os.WriteFile(path, []byte("hello"), 0o600); err != nil {
+		t.Fatalf("write fixture: %v", err)
+	}
+	const digest = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	stdout, stderr, exitCode := runForTest(t, "--json", "hash", "verify", "--expected", digest, path)
+	if exitCode != ExitSuccess {
+		t.Fatalf("exit code = %d, want %d; stderr = %q", exitCode, ExitSuccess, stderr)
+	}
+	var envelope struct {
+		Command string         `json:"command"`
+		OK      bool           `json:"ok"`
+		Data    hashVerifyData `json:"data"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if envelope.Command != "hash verify" || !envelope.OK || !envelope.Data.Verified || envelope.Data.Digest != digest || envelope.Data.Source != "file" {
+		t.Errorf("envelope = %+v, want verified file hash", envelope)
+	}
+	if strings.Contains(stdout, path) {
+		t.Error("JSON output exposes input file path")
+	}
+}
+
+func TestRunHashVerifyMismatch(t *testing.T) {
+	stdout, stderr, exitCode := runForTestWithInput(t, "hello", "--json", "hash", "verify", "--expected", strings.Repeat("0", 64))
+	if exitCode != ExitData || stderr != "" {
+		t.Fatalf("stdout/stderr/code = %q/%q/%d, want JSON data error", stdout, stderr, exitCode)
+	}
+	var envelope struct {
+		OK    bool `json:"ok"`
+		Error struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal([]byte(stdout), &envelope); err != nil {
+		t.Fatalf("stdout is not JSON: %v", err)
+	}
+	if envelope.OK || envelope.Error.Code != "checksum_mismatch" {
+		t.Errorf("envelope = %+v, want checksum_mismatch", envelope)
+	}
+}
+
+func TestRunHashVerifyRejectsInvalidExpectedDigest(t *testing.T) {
+	stdout, stderr, exitCode := runForTestWithInput(t, "hello", "hash", "verify", "--expected", "abcd")
+	if exitCode != ExitUsage || stdout != "" || !strings.Contains(stderr, "64 hexadecimal characters") {
+		t.Errorf("stdout/stderr/code = %q/%q/%d, want invalid digest usage", stdout, stderr, exitCode)
+	}
+}

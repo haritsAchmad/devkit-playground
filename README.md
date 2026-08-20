@@ -21,6 +21,7 @@ Developers can use the CLI directly for recurring tasks:
 devkit uuid
 devkit secret
 devkit hash ./artifact.zip
+devkit hash verify --expected "$EXPECTED_SHA256" ./artifact.zip
 devkit jwt inspect < token.txt
 devkit json pretty response.json
 devkit env diff .env.example .env
@@ -61,7 +62,7 @@ DevKit is not an AI agent. It may eventually serve as a deterministic tool layer
 |---|---|
 | `devkit uuid` | Generate cryptographically secure UUIDs |
 | `devkit secret` | Generate cryptographically secure secrets |
-| `devkit hash` | Hash a file or standard input |
+| `devkit hash` | Hash or verify a file or standard input |
 | `devkit jwt inspect` | Decode JWT metadata and claims without verification |
 | `devkit json pretty` | Format JSON for readability |
 | `devkit json minify` | Remove insignificant JSON whitespace |

@@ -61,6 +61,7 @@ The milestone is complete when:
 - Validate portable `port inspect` behavior before adding optional process-owner lookup.
 - Validate `timestamp convert` against logs, databases, and API payloads.
 - Validate Base64 variants and binary JSON transport in real pipelines.
+- Validate `hash verify` against release artifacts and CI checksum workflows.
 
 Potential candidates, subject to demonstrated need:
 

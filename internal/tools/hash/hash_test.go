@@ -41,6 +41,34 @@ func TestSumRejectsUnsupportedAlgorithm(t *testing.T) {
 	}
 }
 
+func TestVerifyMatchesCaseInsensitiveDigest(t *testing.T) {
+	verification, err := Verify(strings.NewReader("hello"), AlgorithmSHA256, "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824")
+	if err != nil {
+		t.Fatalf("Verify() error = %v", err)
+	}
+	if !verification.Match || verification.Bytes != 5 {
+		t.Errorf("verification = %+v, want matching five-byte input", verification)
+	}
+}
+
+func TestVerifyReportsMismatch(t *testing.T) {
+	verification, err := Verify(strings.NewReader("hello"), AlgorithmSHA256, strings.Repeat("0", 64))
+	if err != nil {
+		t.Fatalf("Verify() error = %v", err)
+	}
+	if verification.Match {
+		t.Error("Match = true, want false")
+	}
+}
+
+func TestVerifyRejectsInvalidDigest(t *testing.T) {
+	for _, expected := range []string{"not-hex", "abcd"} {
+		if _, err := Verify(strings.NewReader("hello"), AlgorithmSHA256, expected); !errors.Is(err, ErrInvalidDigest) {
+			t.Errorf("Verify(%q) error = %v, want ErrInvalidDigest", expected, err)
+		}
+	}
+}
+
 func TestSumReportsReadFailure(t *testing.T) {
 	_, err := Sum(errorReader{}, AlgorithmSHA256)
 	if err == nil {
