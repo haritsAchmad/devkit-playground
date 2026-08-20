@@ -58,12 +58,13 @@ The milestone is complete when:
 - Validate `file inspect` against real files and agent workflows.
 - Validate `repo inspect` as a deterministic preflight for human and agent workflows.
 - Validate `text inspect` against cross-platform files and editor workflows.
+- Validate portable `port inspect` behavior before adding optional process-owner lookup.
 
 Potential candidates, subject to demonstrated need:
 
 - Base64 encode/decode.
 - Timestamp conversion.
-- Port and process inspection.
+- Optional process-owner lookup for `port inspect`.
 
 ## Later — Programmatic integration
 

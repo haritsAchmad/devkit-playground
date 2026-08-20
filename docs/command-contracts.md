@@ -331,6 +331,36 @@ devkit text inspect <path>
 
 Invalid usage is error `2`; a non-regular input is data error `3`; metadata, open, and read failures are operation error `4`.
 
+## `port inspect`
+
+```text
+devkit port inspect [--host IP] <port>
+```
+
+- Accepts a TCP port from `1` through `65535` and a local IPv4 or IPv6 address.
+- Defaults to `127.0.0.1`; hostnames are rejected to avoid DNS or resolver-dependent behavior.
+- Briefly binds the requested local address and immediately closes it. The command does not connect to the service occupying a port.
+- Reports `available` when the bind succeeds, `in_use` when the operating system reports that the address is already bound, and `unavailable` when the operating system denies the bind.
+- Reports a point-in-time observation; another process may claim or release the port immediately afterward.
+- Does not claim that `in_use` means a reachable or healthy listening service.
+- The portable implementation does not resolve PID or process name. Those fields are `null` and `owner_inspection` is `not_supported`.
+- `reason` is `bind_access_denied` for the recognized unavailable case and `null` otherwise. Possible causes include permissions, reserved ranges, or an exclusive wildcard binding; the portable probe does not guess which one applies.
+
+```json
+{
+  "host": "127.0.0.1",
+  "port": 5432,
+  "protocol": "tcp",
+  "state": "in_use",
+  "reason": null,
+  "pid": null,
+  "process": null,
+  "owner_inspection": "not_supported"
+}
+```
+
+Invalid host, port, or usage is error `2`; an unclassified operating-system probe failure is operation error `4`.
+
 ## Contract testing
 
 Each command must test:

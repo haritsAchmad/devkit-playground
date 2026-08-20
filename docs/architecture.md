@@ -34,6 +34,7 @@ internal/
     fileinspect/
     repoinspect/
     textinspect/
+    portinspect/
 testdata/
 docs/
 ```

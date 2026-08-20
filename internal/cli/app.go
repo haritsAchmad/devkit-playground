@@ -37,6 +37,7 @@ Commands:
   file inspect inspect a regular file's type, size, extension, and SHA-256
   repo inspect detect repository metadata without reading file contents
   text inspect inspect encoding, BOM, line endings, and line counts
+  port inspect inspect local TCP port availability
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -80,6 +81,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runRepo(remaining[1:], stdout, stderr, jsonMode)
 	case "text":
 		return runText(remaining[1:], stdout, stderr, jsonMode)
+	case "port":
+		return runPort(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)
