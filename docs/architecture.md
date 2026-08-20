@@ -33,6 +33,7 @@ internal/
     envdiff/
     fileinspect/
     repoinspect/
+    textinspect/
 testdata/
 docs/
 ```

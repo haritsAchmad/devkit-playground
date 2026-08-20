@@ -36,6 +36,7 @@ Commands:
   env diff     compare dotenv key sets without exposing values
   file inspect inspect a regular file's type, size, extension, and SHA-256
   repo inspect detect repository metadata without reading file contents
+  text inspect inspect encoding, BOM, line endings, and line counts
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -77,6 +78,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runFile(remaining[1:], stdout, stderr, jsonMode)
 	case "repo":
 		return runRepo(remaining[1:], stdout, stderr, jsonMode)
+	case "text":
+		return runText(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)
