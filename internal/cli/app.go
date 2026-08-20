@@ -45,6 +45,7 @@ Commands:
   base64 decode     decode Base64 to original bytes
   help              show help
   version           show the DevKit version
+  capabilities      report structured command capabilities
 `
 
 // Run executes the CLI and returns the process exit code.
@@ -94,6 +95,8 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return runTimestamp(remaining[1:], stdout, stderr, jsonMode)
 	case "base64":
 		return runBase64(remaining[1:], stdin, stdout, stderr, jsonMode)
+	case "capabilities":
+		return runCapabilities(remaining[1:], stdout, stderr, jsonMode)
 	default:
 		message := fmt.Sprintf("unknown command %q", command)
 		return writeFailure(stdout, stderr, jsonMode, command, "unknown_command", message, ExitUsage)

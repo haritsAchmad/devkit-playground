@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `timestamp convert` command for explicit Unix, Unix-millisecond, and RFC3339 conversion to deterministic UTC output.
 - `base64 encode` and `base64 decode` commands with standard/URL-safe alphabets, explicit padding, bounded input, and binary-safe JSON transport.
 - `hash verify` command for streaming SHA-256/SHA-512 checksum verification with failure-on-mismatch semantics.
+- `capabilities` command with versioned, machine-readable discovery metadata for programs and agents.
 - Fuzz targets for JWT, dotenv, JSON, Base64, file-inspection, text-inspection, and timestamp parsing paths.
 
 ### Changed

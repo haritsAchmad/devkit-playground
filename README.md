@@ -39,6 +39,7 @@ Commands will support structured JSON output so programs and future local AI age
 
 ```sh
 devkit --json uuid
+devkit --json capabilities
 ```
 
 DevKit is not an AI agent. It may eventually serve as a deterministic tool layer for one.
@@ -73,6 +74,7 @@ DevKit is not an AI agent. It may eventually serve as a deterministic tool layer
 | `devkit port inspect` | Check whether a local TCP port is available or in use |
 | `devkit timestamp convert` | Convert Unix, Unix-millisecond, and RFC3339 timestamps to UTC |
 | `devkit base64 encode/decode` | Encode or decode standard and URL-safe Base64 |
+| `devkit capabilities` | Report machine-readable command capabilities for programs and agents |
 
 The precise interfaces are defined in [Command contracts](docs/command-contracts.md).
 

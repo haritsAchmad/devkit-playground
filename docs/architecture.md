@@ -116,3 +116,7 @@ The following are intentionally deferred:
 - Persistent configuration or state.
 
 These decisions should be driven by working commands and real consumers.
+
+## Capability discovery
+
+The CLI exposes `capabilities` as a versioned inventory for programs and agents. It describes stable command names and operational traits but does not execute tools, expose a public Go API, or establish an MCP adapter. This keeps discovery separate from the deferred integration decisions above.

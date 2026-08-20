@@ -198,6 +198,7 @@ func TestRunEveryCommandHelpAsJSON(t *testing.T) {
 		{[]string{"port", "inspect", "--help"}, "port inspect help"},
 		{[]string{"timestamp", "convert", "--help"}, "timestamp convert help"},
 		{[]string{"base64", "encode", "--help"}, "base64 help"},
+		{[]string{"capabilities", "--help"}, "capabilities help"},
 	}
 	for _, test := range cases {
 		t.Run(test.command, func(t *testing.T) {

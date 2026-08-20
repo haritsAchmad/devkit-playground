@@ -63,6 +63,7 @@ The milestone is complete when:
 - Validate `timestamp convert` against logs, databases, and API payloads.
 - Validate Base64 variants and binary JSON transport in real pipelines.
 - Validate `hash verify` against release artifacts and CI checksum workflows.
+- Validate the structured capability manifest with an actual agent consumer.
 
 Potential candidates, subject to demonstrated need:
 
@@ -70,6 +71,7 @@ Potential candidates, subject to demonstrated need:
 
 ## Later — Programmatic integration
 
+- Use `capabilities` as machine-readable discovery without treating it as an execution adapter.
 - Define a programmatic tool adapter after the core CLI is useful.
 - Integrate selected tools with `go-ai-playground` if needed.
 - Evaluate an MCP adapter only if it provides concrete value.

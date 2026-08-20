@@ -449,6 +449,41 @@ devkit base64 decode [--variant standard|url] [--padding padded|raw] [file]
 
 Invalid flags and modes are error `2`; invalid or oversized Base64 is data error `3`; file and input read failures are operation error `4`.
 
+## `capabilities`
+
+```text
+devkit capabilities
+devkit --json capabilities
+```
+
+- Reports every callable command in deterministic lexical order.
+- Provides a dedicated `capabilities_schema_version` inside the normal versioned JSON envelope so discovery metadata can evolve intentionally.
+- Reports each command's category, summary, accepted input sources, output-sensitivity class, side effects, offline behavior, and JSON support.
+- `input_sources` is always an array, including an empty array for commands that require no input.
+- `output_sensitivity` is `normal`, `requested_content`, or `sensitive`. Requested content means the caller explicitly asked DevKit to reproduce or transform supplied content; sensitive marks outputs such as generated secrets or decoded JWT claims.
+- `side_effects` is `none` except for explicitly documented behavior such as `temporary_local_bind` for `port inspect`.
+- This is discovery metadata, not a general programmatic execution adapter. Programs still invoke the documented CLI contracts.
+
+```json
+{
+  "capabilities_schema_version": "1",
+  "commands": [
+    {
+      "name": "hash verify",
+      "category": "integrity",
+      "summary": "verify a file or standard input checksum",
+      "input_sources": ["arguments", "file", "stdin"],
+      "output_sensitivity": "normal",
+      "side_effects": "none",
+      "offline": true,
+      "supports_json": true
+    }
+  ]
+}
+```
+
+Arguments other than help are usage error `2`.
+
 ## Contract testing
 
 Each command must test:
