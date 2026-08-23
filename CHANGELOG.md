@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `text inspect` now reports every non-ASCII code point with its 1-based line and column, a classification, and a suspicious flag, capped at 100 findings while aggregate counts (`non_ascii`, `suspicious`) remain complete. Suspicious classifications cover invisible format characters, unusual Unicode whitespace, combining marks, modifier letters, Greek or Cyrillic letters, and quote-like non-ASCII punctuation -- useful for catching homoglyph or invisible-character tricks in source and config files. Common typography such as em dashes remains informational, not suspicious.
+
 ## [0.2.0] - 2026-08-20
 
 ### Added
