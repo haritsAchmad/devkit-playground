@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "name": "devkit_base64_encode",
+  "version": "1.0.0",
+  "description": "Encode teks menjadi Base64 (offline). Teks di-encode persis apa adanya sebagai UTF-8, termasuk spasi/baris baru di akhir.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "base64-encode"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Teks yang akan di-encode, persis apa adanya."
+      },
+      "variant": {
+        "type": "string",
+        "description": "Varian alfabet Base64: \"standard\" (bawaan) atau \"url\"."
+      },
+      "padding": {
+        "type": "string",
+        "description": "Padding: \"padded\" (bawaan, pakai '=') atau \"raw\" (tanpa padding)."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "text"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 65536
+}

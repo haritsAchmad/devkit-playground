@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `devkittool` adapter (`cmd/devkittool`) and `agent-tools/` manifests that expose `base64 encode`/`decode`, `hash`, `hash verify`, `json pretty`/`minify`, `timestamp convert`, and `uuid` as local-agent-playground external tools: JSON input on stdin, the same code path as the CLI, errors on stderr with exit code 1, and binary Base64 results described instead of written raw. File/directory-path commands, `secret`, `jwt inspect`, and `port inspect` are intentionally not exposed. Contract tests check every manifest against the adapter and run every operation through the built binary.
+
 - `text inspect` now reports every non-ASCII code point with its 1-based line and column, a classification, and a suspicious flag, capped at 100 findings while aggregate counts (`non_ascii`, `suspicious`) remain complete. Suspicious classifications cover invisible format characters, unusual Unicode whitespace, combining marks, modifier letters, Greek or Cyrillic letters, and quote-like non-ASCII punctuation -- useful for catching homoglyph or invisible-character tricks in source and config files. Common typography such as em dashes remains informational, not suspicious.
 
 ## [0.2.0] - 2026-08-20

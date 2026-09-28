@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "name": "devkit_uuid",
+  "version": "1.0.0",
+  "description": "Buat UUID versi 4 acak (offline).",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "uuid"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "count": {
+        "type": "integer",
+        "description": "Jumlah UUID, 1-1000 (bawaan 1)."
+      }
+    },
+    "additionalProperties": false
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 65536
+}

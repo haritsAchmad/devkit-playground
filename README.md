@@ -45,6 +45,19 @@ devkit capabilities --category inspect
 
 DevKit is not an AI agent. It may eventually serve as a deterministic tool layer for one.
 
+### Using DevKit from local-agent-playground
+
+`agent-tools/` holds [local-agent-playground](../../../local-agent-playground) external tool manifests for a safe subset of commands: `base64 encode`/`decode`, `hash`, `hash verify`, `json pretty`/`minify`, `timestamp convert`, and `uuid`. Each manifest runs `devkittool` (`cmd/devkittool`), an adapter that reads the model's input as a JSON object on stdin, builds the same arguments the CLI receives, and calls the same code as `devkit`; results go to stdout, errors to stderr with exit code 1. Decoded Base64 that is not UTF-8 text is reported as binary instead of written raw.
+
+Commands that read file or directory paths (`file inspect`, `text inspect`, `env diff`, `repo inspect`) are deliberately not exposed: the model would choose paths outside the workspace boundary local-agent enforces for its own file tools. `secret` and `jwt inspect` (sensitive output) and `port inspect` (binds a local port) are left out as well.
+
+```powershell
+.\scripts\build-agent-tools.ps1   # builds devkittool.exe and copies it into each manifest folder
+$env:AGENT_TOOL_ROOTS = "<path>\devkit-playground\agent-tools"
+```
+
+`cmd/devkittool/contract_test.go` checks every manifest against the adapter (subcommand, `input_schema` properties against the decoded JSON fields, offline read-only classification) and runs every operation through the built binary.
+
 ## Design principles
 
 - Keep tool logic independent from CLI presentation.

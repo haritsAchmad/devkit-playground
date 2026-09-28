@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "name": "devkit_hash",
+  "version": "1.0.0",
+  "description": "Hitung digest SHA-256 atau SHA-512 dari teks (offline). Teks di-hash persis apa adanya sebagai byte UTF-8 -- tambahan baris baru di akhir mengubah hasil. Tool ini hanya menerima teks dan tidak membaca file; hasil read_file bisa berisi penanda halaman sehingga tidak cocok untuk menghitung hash file.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "hash"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Teks yang akan di-hash, persis apa adanya."
+      },
+      "algorithm": {
+        "type": "string",
+        "description": "Algoritma: \"sha256\" (bawaan) atau \"sha512\"."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "text"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 4096
+}

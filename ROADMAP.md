@@ -79,7 +79,7 @@ Potential candidates, subject to demonstrated need:
 ## Later — Programmatic integration
 
 - Use `capabilities` as machine-readable discovery without treating it as an execution adapter.
-- Define a programmatic tool adapter after the core CLI is useful.
+- Define a programmatic tool adapter after the core CLI is useful. First version done (2026-09-28): `cmd/devkittool` plus `agent-tools/` manifests for local-agent-playground, covering the offline commands whose input is inline text or arguments; verified through `local-agent tools doctor` and a real `local-agent chat` call. Path-based commands still need a design that respects the agent's workspace boundary.
 - Integrate selected tools with `go-ai-playground` if needed.
 - Evaluate an MCP adapter only if it provides concrete value.
 - Define stable compatibility guarantees before `v1.0.0`.

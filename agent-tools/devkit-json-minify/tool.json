@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "name": "devkit_json_minify",
+  "version": "1.0.0",
+  "description": "Minify satu nilai JSON (hapus spasi yang tidak perlu, offline). Galat bila teks bukan tepat satu nilai JSON valid.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "json-minify"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "json": {
+        "type": "string",
+        "description": "Teks JSON yang akan di-minify."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "json"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 65536
+}

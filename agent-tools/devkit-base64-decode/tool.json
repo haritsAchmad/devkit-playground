@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "name": "devkit_base64_decode",
+  "version": "1.0.0",
+  "description": "Decode Base64 menjadi teks (offline). Kalau hasilnya bukan teks UTF-8 (data biner), yang dikembalikan ukuran dan Base64 standarnya, bukan byte mentah.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "base64-decode"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "string",
+        "description": "String Base64 yang akan di-decode."
+      },
+      "variant": {
+        "type": "string",
+        "description": "Varian alfabet Base64: \"standard\" (bawaan) atau \"url\"."
+      },
+      "padding": {
+        "type": "string",
+        "description": "Padding: \"padded\" (bawaan, pakai '=') atau \"raw\" (tanpa padding)."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "data"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 65536
+}

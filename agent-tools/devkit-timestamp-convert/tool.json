@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "name": "devkit_timestamp_convert",
+  "version": "1.0.0",
+  "description": "Konversi timestamp ke UTC (RFC 3339), detik Unix, dan milidetik Unix (offline, tidak bergantung zona waktu mesin).",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "timestamp-convert"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "value": {
+        "type": "string",
+        "description": "Nilai timestamp, mis. \"1700000000\" atau \"2026-09-28T10:00:00+07:00\"."
+      },
+      "from": {
+        "type": "string",
+        "description": "Format input: \"unix\" (bawaan), \"unix-ms\", atau \"rfc3339\"."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "value"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 4096
+}

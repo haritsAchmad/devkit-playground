@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "name": "devkit_hash_verify",
+  "version": "1.0.0",
+  "description": "Cocokkan digest SHA-256/SHA-512 teks dengan digest yang diharapkan (offline). Galat bila tidak cocok atau digest bukan hex dengan panjang yang benar.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "hash-verify"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Teks yang di-hash, persis apa adanya."
+      },
+      "expected": {
+        "type": "string",
+        "description": "Digest hex yang diharapkan (64 karakter untuk sha256, 128 untuk sha512)."
+      },
+      "algorithm": {
+        "type": "string",
+        "description": "Algoritma: \"sha256\" (bawaan) atau \"sha512\"."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "text",
+      "expected"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 4096
+}

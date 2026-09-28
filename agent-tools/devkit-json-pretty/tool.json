@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "name": "devkit_json_pretty",
+  "version": "1.0.0",
+  "description": "Rapikan (pretty-print) satu nilai JSON dengan indentasi (offline). Galat bila teks bukan tepat satu nilai JSON valid -- berguna juga untuk memvalidasi JSON.",
+  "executable": "./devkittool.exe",
+  "interpreter": "",
+  "args": [
+    "json-pretty"
+  ],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "json": {
+        "type": "string",
+        "description": "Teks JSON yang akan dirapikan."
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "json"
+    ]
+  },
+  "working_directory": ".",
+  "network": false,
+  "action_kind": "read",
+  "timeout": "10s",
+  "max_output_bytes": 65536
+}
