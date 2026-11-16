@@ -104,8 +104,18 @@ DevKit is not:
 
 ## Requirements
 
-- Go 1.26.1 or newer for development from source
-- Git
+Measured on 16 November 2026 on the developer laptop: Windows 11 Home 64-bit, AMD Ryzen 5 7535HS (6 cores, 12 threads), 16 GB RAM. Memory is the peak of one command, sampled every 5 ms. "Minimum" is derived from those numbers; it has not been tried on a weaker machine.
+
+| | Minimum | Recommended | Measured on the test laptop |
+| --- | --- | --- | --- |
+| Operating system | Windows, Linux, or macOS, 64-bit (pure Go) | same | Windows 11 Home 64-bit |
+| CPU | Any x64 or ARM64 | same | Ryzen 5 7535HS |
+| RAM | 64 MB free per command | same | ~5 MB peak (`devkit hash`, `devkittool hash`) |
+| GPU | Not used | -- | -- |
+| Free disk | `devkit` binary 6 MB; with `agent-tools/` built, ~55 MB (one `devkittool.exe` copy, 6 MB, per manifest folder) | same | same |
+| Screen | None (command line) | -- | -- |
+| Internet | Never for core commands; once for Go modules when building | -- | -- |
+| Build | Go 1.26.1 or newer, Git | -- | go1.26.1 |
 
 No runtime dependency beyond the compiled DevKit binary is intended for core commands.
 
